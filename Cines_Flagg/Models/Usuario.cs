@@ -18,12 +18,12 @@ namespace Cines_Flagg.Models
         public int DNI { get; set; } = 0;
         public string Mail { get; set; } = "";
         public string Password { get; set; } = "";
-        public int IntentosFallidos { get; set; } = 0;
-        public bool Bloqueado { get; set; } = false;
+        public int? IntentosFallidos { get; set; } = 0;
+        public bool? Bloqueado { get; set; } = false;
         public List<Funcion> MisFunciones { get; set; } = new List<Funcion>();
-        public double Credito { get; set; }
+        public double? Credito { get; set; }
         public DateTime FechaNacimiento { get; set; } = new DateTime();
-        public bool EsAdmin { get; set; } = false;
+        public bool? EsAdmin { get; set; } = false;
         public List<UsuarioFuncion> UsuarioFuncion { get; set; }
 
 

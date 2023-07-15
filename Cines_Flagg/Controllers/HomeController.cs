@@ -1,4 +1,5 @@
 ﻿using Cines_Flagg.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -15,11 +16,11 @@ namespace Cines_Flagg.Controllers
             _logger = logger;
             _context = context;
         }
-
+     //   [Authorize]
         public IActionResult Index()
         {
             Usuario usuario = _context.usuarios.Where(usuario => usuario.ID == 3).FirstOrDefault();
-            System.Diagnostics.Debug.WriteLine(usuario.EsAdmin);
+           // System.Diagnostics.Debug.WriteLine(usuario.EsAdmin);
            // ViewData["usuario"] = usuario;
             ViewBag.usuario = usuario;
             return View(usuario);

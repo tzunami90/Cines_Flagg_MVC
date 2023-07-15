@@ -87,10 +87,11 @@ namespace Cines_Flagg.Models
                     usr.Property(u => u.DNI).HasColumnType("varchar(50)");
                     usr.Property(u => u.Mail).HasColumnType("varchar(50)");
                     usr.Property(u => u.Password).HasColumnType("varchar(50)");
-                    usr.Property(u => u.Bloqueado).HasColumnType("bit");
-                    usr.Property(u => u.Credito).HasColumnType("float");
+                    usr.Property(u => u.IntentosFallidos).HasColumnType("int").HasDefaultValueSql("0");
+                    usr.Property(u => u.Bloqueado).HasColumnType("bit").HasDefaultValueSql("0").IsRequired(false);
+                    usr.Property(u => u.Credito).HasColumnType("float").HasDefaultValueSql("0");
                     usr.Property(u => u.FechaNacimiento).HasColumnType("date");
-                    usr.Property(u => u.EsAdmin).HasColumnType("bit");
+                    usr.Property(u => u.EsAdmin).HasColumnType("bit").HasDefaultValueSql("0").IsRequired(false);
 
                 });
 

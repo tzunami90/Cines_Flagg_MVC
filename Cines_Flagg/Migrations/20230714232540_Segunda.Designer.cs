@@ -4,6 +4,7 @@ using Cines_Flagg.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cines_Flagg.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20230714232540_Segunda")]
+    partial class Segunda
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,12 +112,12 @@ namespace Cines_Flagg.Migrations
                     b.Property<string>("Apellido")
                         .HasColumnType("varchar(50)");
 
-                    b.Property<bool?>("Bloqueado")
+                    b.Property<bool>("Bloqueado")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValueSql("0");
 
-                    b.Property<double?>("Credito")
+                    b.Property<double>("Credito")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("float")
                         .HasDefaultValueSql("0");
@@ -123,7 +126,7 @@ namespace Cines_Flagg.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(50)");
 
-                    b.Property<bool?>("EsAdmin")
+                    b.Property<bool>("EsAdmin")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValueSql("0");
@@ -131,10 +134,8 @@ namespace Cines_Flagg.Migrations
                     b.Property<DateTime>("FechaNacimiento")
                         .HasColumnType("date");
 
-                    b.Property<int?>("IntentosFallidos")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValueSql("0");
+                    b.Property<int>("IntentosFallidos")
+                        .HasColumnType("int");
 
                     b.Property<string>("Mail")
                         .HasColumnType("varchar(50)");
