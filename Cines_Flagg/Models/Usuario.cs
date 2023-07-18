@@ -1,6 +1,7 @@
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
@@ -22,6 +23,7 @@ namespace Cines_Flagg.Models
         public bool? Bloqueado { get; set; } = false;
         public List<Funcion> MisFunciones { get; set; } = new List<Funcion>();
         public double? Credito { get; set; }
+        [Display(Name = "Fecha de Nacimiento")]
         public DateTime FechaNacimiento { get; set; } = new DateTime();
         public bool? EsAdmin { get; set; } = false;
         public List<UsuarioFuncion> UsuarioFuncion { get; set; }

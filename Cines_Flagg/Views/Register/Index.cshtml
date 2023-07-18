@@ -16,36 +16,41 @@
         @using (Html.BeginForm("Index", "Cartelera", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
-
+             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                @Html.LabelFor(m => m.Nombre)
-                @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control" })
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" required/>
+                <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(m => m.Apellido)
-                @Html.TextBoxFor(m => m.Apellido, new { @class = "form-control" })
+               <label asp-for="Apellido" class="control-label"></label>
+                <input asp-for="Apellido" class="form-control" required/>
+                <span asp-validation-for="Apellido" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(m => m.DNI)
-                @Html.TextBoxFor(m => m.DNI, new { @class = "form-control" })
+                <label asp-for="DNI" class="control-label"></label>
+                <input asp-for="DNI" class="form-control" required/>
+                <span asp-validation-for="DNI" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-               @Html.LabelFor(m => m.FechaNacimiento)
-                <input asp-for="FechaNacimiento" class="form-control" />
+               <label asp-for="FechaNacimiento" class="control-label"></label>
+                <input asp-for="FechaNacimiento" class="form-control" required/>
                 <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(m => m.Mail)
-                @Html.TextBoxFor(m => m.Mail, new { @class = "form-control" })
+               <label asp-for="Mail" class="control-label"></label>
+                <input asp-for="Mail" class="form-control" required/>
+                <span asp-validation-for="Mail" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+               <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" required/>
+                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
 
             <div class="form-group">

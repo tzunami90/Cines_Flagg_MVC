@@ -9,6 +9,11 @@
     <meta name="viewport" content="width=device-width" />
     <title>Iniciar sesión</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" />
+       <head>
+        <!-- ... Otras etiquetas ... -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="icon" type="image/png" href="../img/icono.png">
+    </head>
 </head>
 <body>
     <div class="container">
@@ -16,15 +21,17 @@
         @using (Html.BeginForm("Index", "Cartelera", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
-
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                @Html.LabelFor(m => m.Mail)
-                @Html.TextBoxFor(m => m.Mail, new { @class = "form-control" })
+                <label asp-for="Mail" class="control-label"></label>
+                <input asp-for="Mail" class="form-control" required/>
+                <span asp-validation-for="Mail" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                   <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" required/>
+                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
 
             <div class="form-group">

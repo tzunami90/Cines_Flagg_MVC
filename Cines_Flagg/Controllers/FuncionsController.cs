@@ -62,6 +62,7 @@ namespace Cines_Flagg.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 _context.Add(funcion);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

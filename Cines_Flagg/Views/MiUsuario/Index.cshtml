@@ -1,32 +1,70 @@
-﻿@model IEnumerable<Cines_Flagg.Models.Usuario>
+﻿@model Cines_Flagg.Models.Usuario
 @{
     ViewData["Title"] = "Index";
 }
-    
+
 <h1>Mi Usuario</h1>
 
 <div class="container">
-    <div class="row">
-        <form>
-            <!-- <div class="col-4">
-                <div class="row form-group"><input asp-for="Nombre" value=Html.DisplayFor(model => model.Nombre)/></div>
-                <div class="row form-group"><input asp-for="Apellido" value=Html.DisplayFor(model => model.Apellido)/></div>
-                <div class="row form-group"><input asp-for="DNI" value=Html.DisplayFor(model => model.DNI)/></div>
-                <div class="row form-group"><input asp-for="Mail" value=Html.DisplayFor(model => model.Mail)/></div>
-                <div class="row form-group"><input asp-for="Credito" value=Html.DisplayFor(model => model.Credito)/></div>
-                <div class="row form-group"><input asp-for="FechaNacimiento" value=Html.DisplayFor(model => model.FechaNacimiento)/></div>
+    <div class="row d-flex justify-content-center">
+        <div class="col-4 border border-2 p-5 rounded-3 me-5">
+            <form id="form_datos_usuario" asp-action="Edit">
                 <div class="row form-group">
-                    <input type="submit" value="Edit" class="btn btn-primary"/>
+                    <label asp-for="Nombre" class="control-label"></label>
+                    <input asp-for="Nombre" value=@Model.Nombre />
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
                 </div>
-            </div> -->
-        </form>
+                <div class="row form-group">
+                    <label asp-for="Apellido" class="control-label"></label>
+                    <input asp-for="Apellido" value=@Model.Apellido />
+                    <span asp-validation-for="Apellido" class="text-danger"></span>
+                </div>
+                <div class="row form-group">
+                    <label asp-for="DNI" class="control-label"></label>
+                    <input asp-for="DNI" value=@Model.DNI />
+                    <span asp-validation-for="DNI" class="text-danger"></span>
+                </div>
+                <div class="row form-group">    
+                    <label asp-for="Mail" class="control-label"></label>
+                    <input asp-for="Mail" value=@Model.Mail />
+                    <span asp-validation-for="Mail" class="text-danger"></span>
+                </div>
+                <div class="row form-group">
+                    <label for="mostrarCredito" class="control-label">Crédito</label>
+                    <input name="mostrarCredito" value=@Model.Credito disabled="disabled" />
+                </div>
+                <div class="row form-group">
+                    <label asp-for="FechaNacimiento" class="control-label"></label>
+                    @Html.EditorFor(model => model.FechaNacimiento, new { htmlAttributes = new { @class = "datepicker", @type="datetime-local" } })
+                    @Html.ValidationMessageFor(model => model.FechaNacimiento, "", new { @class = "text-danger" })
+                </div>
+                <div class="row form-group mt-3">
+                    <div class="col-4 p-0">
+                        <button type="submit" form="form_datos_usuario" class="btn btn-primary">Modificar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-4 border border-2 p-5 rounded-3 ms-5">
+            <div class="row mt-4 border border-3 rounded-3 p-2">
+                <div class="col-12">
+                    <a asp-action="MisFunciones"><button class="btn btn-primary">Mis Funciones</button></a>
+                </div>
+            </div>
+            <form id="form_cargar_credito" asp-action="CargarCredito">
+                <div class="row mt-5 border border-3 rounded-3 p-2">
+                    <div class="col">
+                        <label for="monto" class="control-label">Crédito a cargar</label>
+                        <input type="number" name="monto" />
+                        <span asp-validation-for="Credito" class="text-danger"></span>
+                    </div>
+                    <div class="col-12 mt-2">
+                        <button form="form_cargar_credito" type="submit" class="btn btn-primary" asp-route-id="@Model.ID">Cargar crédito</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-    
-    <div class="row">
-
-    </div>
-    
-    <div></div>
-
-
 </div>
+

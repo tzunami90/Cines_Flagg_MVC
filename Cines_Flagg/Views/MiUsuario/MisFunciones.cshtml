@@ -1,19 +1,53 @@
-﻿@model Cines_Flagg.Models.Funcion
+﻿@model IEnumerable<Cines_Flagg.Models.UsuarioFuncion>
 @{
-    ViewData["Title"] = "Mis Funciones";
+    ViewData["Title"] = "MisFunciones";
 }
 
-<h1>Mis Funciones</h1>
+<h1 class="center">Mis Funciones</h1>
 <!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-    <title>Mis Funciones</title>
+    <title>Mis Funiones</title>
 </head>
 <body>
-
-
+    <div class="container">
+        <h2>Historial</h2>
+        <div class="row">
+             <div class="table-responsive-sm">
+                <table class="table table-bordered">
+                    <thead>
+                          <tr>
+                            <th>Pelicula</th>
+                            <th>Funcion</th>
+                            <th>Sala</th>
+                            <th>Fecha</th>
+                            <th>Entradas</th>
+                            <th>Costo</th>
+                            <th>Devolver</th>
+                          </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var usuarioFuncion in Model)
+                         {
+                          <tr>                            
+                            <td>@usuarioFuncion.MiFuncion.MiPelicula.Nombre</td>
+                            <td>@usuarioFuncion.MiFuncion.ID</td>
+                            <td>@usuarioFuncion.MiFuncion.MiSala.Ubicacion</td>
+                            <td>@usuarioFuncion.MiFuncion.Fecha</td>
+                            <td>@usuarioFuncion.cantidadCompra</td>
+                            <td>@usuarioFuncion.MiFuncion.Costo</td>
+                            <td><form asp-action="devolverEntrada">
+                                <input type="number" id="cant" required/>
+                                <button type="submit" class="btn btn-danger">Devolver</button></form></td>                           
+                          </tr>
+                           }
+                    </tbody>
+                </table>
+            </div>            
+        </div>        
+    </div>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

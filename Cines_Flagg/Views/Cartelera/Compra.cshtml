@@ -1,0 +1,101 @@
+﻿@{
+    ViewData["Title"] = "Compra";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-center">@ViewBag.NombrePelicula</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <form>
+                        <div class="form-group">
+                            <select name="sala" id="sala" class="form-control">
+                                <option value="" selected disabled>Seleccionar Sala</option>
+                                @foreach (var sala in ViewBag.Salas)
+                                {
+                                    <option value="@sala.ID">@sala.Ubicacion</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="funcion-group" style="display: none;">
+                            <select name="funcion" id="funcion" class="form-control">
+                                <option value="" selected disabled>Seleccionar Función</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="costo-group" style="display: none;">
+                            <select name="costo" id="costo" class="form-control">
+                                <option value="" selected disabled>Seleccionar Costo</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var salaSelect = document.getElementById('sala');
+    var funcionGroup = document.getElementById('funcion-group');
+    var funcionSelect = document.getElementById('funcion');
+    var costoGroup = document.getElementById('costo-group');
+    var costoSelect = document.getElementById('costo');
+
+    salaSelect.addEventListener('change', function () {
+        var salaValue = salaSelect.value;
+
+        funcionGroup.style.display = 'block';
+        updateFuncionOptions(salaValue);
+
+        costoGroup.style.display = 'none';
+    });
+
+    funcionSelect.addEventListener('change', function () {
+
+        var funcionValue = funcionSelect.value;
+
+        costoGroup.style.display = 'block';
+        updateCostoOptions(funcionValue);
+    });
+
+    function updateFuncionOptions(salaValue) {
+
+        funcionSelect.innerHTML = '<option value="" selected disabled>Seleccionar Función</option>';
+
+        var funciones = @Html.Raw(Json.Serialize(ViewBag.Funciones));
+        var filteredFunciones = funciones.filter(function (funcion) {
+            return funcion.SalaId === salaValue;
+        });
+
+        filteredFunciones.forEach(function (funcion) {
+            var option = document.createElement('option');
+            option.value = funcion.Id;
+            option.textContent = funcion.Nombre;
+            funcionSelect.appendChild(option);
+        });
+    }
+
+    function updateCostoOptions(funcionValue) {
+
+        costoSelect.innerHTML = '<option value="" selected disabled>Seleccionar Costo</option>';
+
+        var costos = @Html.Raw(Json.Serialize(ViewBag.Costos));
+        var filteredCostos = costos.filter(function (costo) {
+            return costo.FuncionId === funcionValue;
+        });
+
+        filteredCostos.forEach(function (costo) {
+            var option = document.createElement('option');
+            option.value = costo.Id;
+            option.textContent = costo.Nombre;
+            costoSelect.appendChild(option);
+        });
+    }
+</script>

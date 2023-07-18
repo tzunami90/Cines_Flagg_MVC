@@ -1,4 +1,5 @@
-﻿@model Cines_Flagg.Models.Pelicula
+﻿
+@model List<Pelicula>
 @{
     ViewData["Title"] = "Index";
 }
@@ -8,10 +9,63 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
     <style>
-        .pelicula-poster{
-            width: 200px;
-            height: 300px;
+        .pelicula-poster {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .pelicula-container {
+            position: relative;
+        }
+
+        .poster-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+            .poster-container::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0);
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                z-index: 2;
+            }
+
+            .poster-container:hover::before {
+                background-color: rgba(0, 0, 0, 0.7);
+                opacity: 1;
+            }
+
+        .sinopsis-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 3;
+        }
+
+        .poster-container:hover .sinopsis-container {
+            opacity: 1;
+        }
+
+        .pelicula-poster {
+            position: relative;
+            z-index: 1;
         }
     </style>
 
@@ -20,18 +74,83 @@
 </head>
 <body>
     <div class="container">
-        <h2>Cartelera de Flagg</h2>
-
-       <!-- foreach ()
-        {
-            <div class="col-md-3">
-                <img src="pelicula.poster" alt="pelicula.nombre" class="img-fluid pelicula-poster" />
-                <p>pelicula.nombre</p>
-            </div>
-        }-->
+        <div class="container d-flex justify-content-center align-items-center" style="height: 10vh;">
+            <h2>Cartelera de Flagg</h2>
+        </div>
     </div>
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <div class="container mt-2">
+        <div id="carouselHome" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carousel-home" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-home" data-slide-to="1"></li>
+                <li data-target="#carousel-home" data-slide-to="2"></li>
+            </ol>
+
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="https://www.todoshowcase.com/images/sliders/0000001379.jpg" class="d-block w-100" alt="Imagen 1">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://www.todoshowcase.com/images/sliders/0000001383.jpg" class="d-block w-100" alt="Imagen 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://www.todoshowcase.com/images/sliders/0000001378.jpg" class="d-block w-100" alt="Imagen 3">
+                </div>
+
+            </div>
+
+            <a class="carousel-control-prev" href="#carouselHome" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Anterior</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselHome" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Siguiente</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+
+            @foreach (var pelicula in Model)
+            {
+                <div class="col-md-3">
+                    <div class="pelicula-container">
+                        <a asp-action="Compra" asp-route-nombrePelicula="@pelicula.Nombre">
+
+                            <div class="poster-container">
+                                <img src="@pelicula.Poster" alt="@pelicula.Nombre" class="img-fluid pelicula-poster" />
+
+                                <div class="sinopsis-container">
+
+                                    <p class="sinopsis">@pelicula.Sinopsis</p>
+
+                                </div>
+
+                            </div>
+                        </a>
+                        <p>@pelicula.Nombre</p>
+                    </div>
+                </div>
+
+            }
+
+        </div>
+    </div>
+
+
+
+
+    <script>
+        $(document).ready(function () {
+            $('.carousel').carousel({
+                interval: 5000
+            });
+        });
+    </script>
+
 </body>
 </html>
 
