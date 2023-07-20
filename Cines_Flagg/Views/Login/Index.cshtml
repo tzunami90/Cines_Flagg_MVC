@@ -1,6 +1,6 @@
 ﻿@model Cines_Flagg.Models.Usuario
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Login";
 }
 
 <!DOCTYPE html>
@@ -18,7 +18,7 @@
 <body>
     <div class="container">
         <h2>Iniciar sesión</h2>
-        @using (Html.BeginForm("Index", "Cartelera", FormMethod.Post))
+        @using (Html.BeginForm("Login", "Login", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -26,16 +26,18 @@
                 <label asp-for="Mail" class="control-label"></label>
                 <input asp-for="Mail" class="form-control" required/>
                 <span asp-validation-for="Mail" class="text-danger"></span>
+                @Html.ValidationMessageFor(m => m.Mail)
             </div>
 
             <div class="form-group">
                    <label asp-for="Password" class="control-label"></label>
                 <input asp-for="Password" class="form-control" required/>
                 <span asp-validation-for="Password" class="text-danger"></span>
+                @Html.ValidationMessageFor(m => m.Password)
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Iniciar sesión" class="btn btn-primary" />
+                <input type="submit" value="Login" class="btn btn-primary" />
             </div>
         }
     </div>

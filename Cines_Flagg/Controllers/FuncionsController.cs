@@ -48,6 +48,8 @@ namespace Cines_Flagg.Controllers
         // GET: Funcions/Create
         public IActionResult Create()
         {
+          //Si cambias "ID" por "Nombre" te muestra los nombres de las peliculas ;)
+
             ViewData["idPelicula"] = new SelectList(_context.peliculas, "ID", "ID");
             ViewData["idSala"] = new SelectList(_context.salas, "ID", "ID");
             return View();
@@ -56,12 +58,21 @@ namespace Cines_Flagg.Controllers
         // POST: Funcions/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="funcion"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,idSala,idPelicula,Fecha,CantClientes,Costo")] Funcion funcion)
         {
+      
             if (ModelState.IsValid)
             {
+
+                funcion.MiSala = _context.salas.Where(sala => sala.ID == funcion.MiSala.ID).FirstOrDefault();
+                funcion.MiPelicula = _context.peliculas.Where(pelicula => pelicula.ID == funcion.MiPelicula.ID).FirstOrDefault();
 
                 _context.Add(funcion);
                 await _context.SaveChangesAsync();
@@ -106,6 +117,9 @@ namespace Cines_Flagg.Controllers
             {
                 try
                 {
+                    funcion.MiSala = _context.salas.Where(sala => sala.ID == funcion.MiSala.ID).FirstOrDefault();
+                    funcion.MiPelicula = _context.peliculas.Where(pelicula => pelicula.ID == funcion.MiPelicula.ID).FirstOrDefault();
+
                     _context.Update(funcion);
                     await _context.SaveChangesAsync();
                 }

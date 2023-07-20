@@ -17,6 +17,17 @@ namespace Cines_Flagg
             });
             //----
 
+            //Sesion de usuario
+            builder.Services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                // Make the session cookie essential
+                options.Cookie.IsEssential = true;
+            });
+
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
@@ -33,13 +44,15 @@ namespace Cines_Flagg
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseSession();
+
             app.UseRouting();
 
             app.UseAuthorization();
 
             app.MapControllerRoute( //Ruta por defecto el index del HOME. Si queremos podemos poner por defecto otro (ej login)
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Cartelera}/{action=Index}/{id?}");
 
             app.Run();
         }

@@ -16,3 +16,10 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+nav {
+    background-color: #f64056;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}

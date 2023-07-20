@@ -1,7 +1,7 @@
 ﻿using Cines_Flagg.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-
+using System.Web;
 
 namespace Cines_Flagg.Controllers
 {
@@ -21,7 +21,11 @@ namespace Cines_Flagg.Controllers
 
         public IActionResult Index()
         {
-
+            if(HttpContext.Session.GetString("logueado") == null)
+            { 
+                HttpContext.Session.SetString("logueado", "no"); 
+            }
+            
             var peliculas = _context.peliculas.ToList();
 
             return View(peliculas);
@@ -45,36 +49,42 @@ namespace Cines_Flagg.Controllers
         public IActionResult Compra(string nombrePelicula)
         {
 
-            ViewBag.NombrePelicula = nombrePelicula;
+            if (HttpContext.Session.GetString("logueado") == "no")
+            {               
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewBag.NombrePelicula = nombrePelicula;
 
-            var salas = _context.funciones
-                .Where(f => f.MiPelicula.Nombre == nombrePelicula)
-                .Select(f => f.MiSala)
-                .Distinct()
-                .ToList();
-
-
-            var funciones = _context.funciones
-                .Where(f => f.MiPelicula.Nombre == nombrePelicula)
-                .Select(f => f.Fecha)
-                .Distinct()
-                .ToList();
-
-
-            var costos = _context.funciones
-                .Where(f => f.MiPelicula.Nombre == nombrePelicula)
-                .Select(f => f.Costo)
-                .Distinct()
-                .ToList();
+                var salas = _context.funciones
+                    .Where(f => f.MiPelicula.Nombre == nombrePelicula)
+                    .Select(f => f.MiSala)
+                    .Distinct()
+                    .ToList();
 
 
-            ViewBag.Salas = salas;
-            ViewBag.Funciones = funciones;
-            ViewBag.Costos = costos;
+                var funciones = _context.funciones
+                    .Where(f => f.MiPelicula.Nombre == nombrePelicula)
+                    .Select(f => f.Fecha)
+                    .Distinct()
+                    .ToList();
 
-            return View();
+
+                var costos = _context.funciones
+                    .Where(f => f.MiPelicula.Nombre == nombrePelicula)
+                    .Select(f => f.Costo)
+                    .Distinct()
+                    .ToList();
+
+
+                ViewBag.Salas = salas;
+                ViewBag.Funciones = funciones;
+                ViewBag.Costos = costos;
+
+                return View();
+            }
+            
         }
-
-
     }
 }
