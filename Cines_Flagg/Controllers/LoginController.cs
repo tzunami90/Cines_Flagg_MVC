@@ -42,8 +42,8 @@ namespace Cines_Flagg.Controllers
                 {
                     return RedirectToAction("Index", "Login");
                     ModelState.AddModelError("", "Credenciales inválidas. Inténtalo de nuevo.");
+                    
                 }
-
             }
 
             return View(model);
