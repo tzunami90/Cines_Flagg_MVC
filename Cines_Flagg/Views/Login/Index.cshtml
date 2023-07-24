@@ -18,20 +18,26 @@
 <body>
     <div class="container">
         <h2>Iniciar sesión</h2>
+        @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+        {
+            <div class="alert alert-success">
+                @ViewBag.SuccessMessage
+            </div>        
+        }
         @using (Html.BeginForm("Login", "Login", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Mail" class="control-label"></label>
-                <input asp-for="Mail" class="form-control" required/>
+                <input name="mail" asp-for="Mail" class="form-control" required/>
                 <span asp-validation-for="Mail" class="text-danger"></span>
-                @Html.ValidationMessageFor(m => m.Mail)
+                @Html.ValidationMessageFor(m => m.Mail, "", new { @class = "text-danger"})
             </div>
 
             <div class="form-group">
                    <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" required/>
+                <input name="password" asp-for="Password" class="form-control" required/>
                 <span asp-validation-for="Password" class="text-danger"></span>
                 @Html.ValidationMessageFor(m => m.Password)
             </div>

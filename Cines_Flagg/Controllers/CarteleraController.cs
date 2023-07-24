@@ -1,5 +1,6 @@
 ﻿using Cines_Flagg.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using System.Web;
 
@@ -11,21 +12,26 @@ namespace Cines_Flagg.Controllers
         private readonly ILogger<CarteleraController> _logger;
 
         private readonly MyContext _context;
+        private Usuario usuarioActual;
 
 
         public CarteleraController(ILogger<CarteleraController> logger, MyContext context)
         {
             _logger = logger;
             _context = context;
+
         }
 
         public IActionResult Index()
         {
-            if(HttpContext.Session.GetString("logueado") == null)
+            if(HttpContext.Session.GetString("logueado") != null)
             { 
-                HttpContext.Session.SetString("logueado", "no"); 
+                HttpContext.Session.SetString("logueado", "si");
+                usuarioActual = _context.usuarios.Where( usuario => usuario.ID == HttpContext.Session.GetInt32("idUsuarioActual")).FirstOrDefault();
+                ViewBag.UsuarioActual = usuarioActual.Nombre;
             }
-            
+
+            ViewBag.usAct = usuarioActual;
             var peliculas = _context.peliculas.ToList();
 
             return View(peliculas);

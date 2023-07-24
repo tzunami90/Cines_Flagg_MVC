@@ -13,7 +13,7 @@
 <body>
     <div class="container">
         <h2>Registro</h2>
-        @using (Html.BeginForm("Index", "Cartelera", FormMethod.Post))
+        @using (Html.BeginForm("Register", "Register", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
              <div asp-validation-summary="ModelOnly" class="text-danger"></div>

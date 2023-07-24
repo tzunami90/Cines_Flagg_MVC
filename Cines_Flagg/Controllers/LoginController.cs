@@ -21,48 +21,46 @@ namespace Cines_Flagg.Controllers
             return View();
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(Usuario model)
+        public ActionResult Login([Bind("Mail,Password")] Usuario model)
         {
             if (ModelState.IsValid)
             {
                 // Lógica para validar las credenciales del usuario en la base de datos
-                bool isValidUser = ValidateUser(model.Mail, model.Password);
-
+                bool isValidUser = ValidateUser(model.Mail,model.Password);
                 if (isValidUser)
                 {
+                    Debug.WriteLine(model.Nombre);
                     // Aquí puedes guardar información del usuario en la sesión si es necesario
                     HttpContext.Session.SetString("logueado", "si");
                     // Redirigir al controlador y acción que representan la página de inicio después del inicio de sesión exitoso
+                    HttpContext.Session.SetInt32("idUsuarioActual", model.ID);
                     return RedirectToAction("Index", "Cartelera");
                 }
                 else
                 {
-                    return RedirectToAction("Index", "Login");
                     ModelState.AddModelError("", "Credenciales inválidas. Inténtalo de nuevo.");
-                    
+                    return RedirectToAction("Index", "Login");
                 }
             }
-
             return View(model);
         }
 
         // Método para validar las credenciales del usuario en la base de datos
         private bool ValidateUser(string mail, string password)
         {
+
             try
             {
-                string mailU = mail;
-                string passU = password; //¿¿COMO PUEDE SER QUE AL IGUALARLO PONGA LA PASS Y SINO EL MAIL??
-
+                /*string mailU = mail;
+                string passU = password; //¿¿COMO PUEDE SER QUE AL IGUALARLO PONGA LA PASS Y SINO EL MAIL??*/
                 string comprobar = "";
                 _context.usuarios.Load();
-                Usuario usr = _context.usuarios.Where(u => u.Mail == mailU && u.Bloqueado == false).FirstOrDefault();
+                Usuario usr = _context.usuarios.Where(u => u.Mail == mail && u.Bloqueado == false).FirstOrDefault();
                 if (usr != null)
                 {
-                    if (usr.Password == passU)
+                    if (usr.Password == password)
                     {
                         UsuarioActual = usr;
                         comprobar = "ok";
@@ -96,5 +94,32 @@ namespace Cines_Flagg.Controllers
                 return false;
             }
         }
+
+        /* [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(Usuario model, string mail, string pass)
+        {
+            if (ModelState.IsValid)
+            {
+                // Lógica para validar las credenciales del usuario en la base de datos
+                var validarUsuario = _context.usuarios.FirstOrDefault(u => u.Mail == mail);//model.Mail
+                bool isValidUser = ValidateUser(model.Mail, model.Password);
+
+                if (validarUsuario != null && validarUsuario.Password == pass)//model.Password
+                {
+                    // Aquí puedes guardar información del usuario en la sesión si es necesario
+                    HttpContext.Session.SetString("logueado", "si");
+                    // Redirigir al controlador y acción que representan la página de inicio después del inicio de sesión exitoso
+                    return RedirectToAction("Index", "Cartelera");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Credenciales inválidas. Inténtalo de nuevo.");
+                    return RedirectToAction("Index", "Login");
+                }
+            }
+
+            return View(model);
+        }*/
     }
 }

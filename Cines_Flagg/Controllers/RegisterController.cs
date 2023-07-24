@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Cines_Flagg.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace Cines_Flagg.Controllers
 {
@@ -18,36 +19,50 @@ namespace Cines_Flagg.Controllers
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Register(Usuario model)
-        {
-            if (ModelState.IsValid)
-            {
-                // Lógica de registro de usuario
-                // Aquí puedes crear una nueva cuenta de usuario con los datos proporcionados
-
-                // Ejemplo de redirección a la página de inicio de sesión después del registro exitoso
-                return RedirectToAction("Index", "Login");
-            }
-
-            // Si llega aquí, significa que el modelo no es válido, por lo que
-            // volvemos a mostrar el formulario con los mensajes de validación
-            return View(model);
-        }
-
         //Registro de usuario nuevo en la BD 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index([Bind("Nombre,Apellido,DNI,Mail,Password")] Usuario usuario)
+        public async Task<IActionResult> Register([Bind("Nombre,Apellido,DNI,FechaNacimiento,Mail,Password")] Usuario model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(usuario);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                bool isValidUser = ValidateUser(model.Mail, model.DNI);
+
+                if (isValidUser)
+                {
+                    _context.Add(model);
+                    await _context.SaveChangesAsync();
+                    ViewBag.SuccessMessage = "Registro Exitoso";
+                    return RedirectToAction("Index", "Login");   
+                }
+                else
+                {
+                    ModelState.AddModelError("Usuario", "Ya existe un usuario con este Mail");
+                    return RedirectToAction("Index", "Register");
+                }
             }
-            return View(usuario);
+            return View(model);
+        }
+
+        private bool ValidateUser(string Mail, int DNI)
+        {
+            try
+            {
+                _context.usuarios.Load();
+                Usuario usr = _context.usuarios.Where(u => u.Mail == Mail || u.DNI == DNI).FirstOrDefault();
+                if (usr != null)
+                {
+                    return false;
+                }              
+                else{
+                    return true;
+                }               
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return false;
+            }
         }
 
     }
