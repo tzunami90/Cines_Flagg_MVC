@@ -1,8 +1,10 @@
-﻿        using Cines_Flagg.Models;
+﻿using Cines_Flagg.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using Newtonsoft.Json;
+
 
 namespace Cines_Flagg.Controllers
 {
@@ -21,8 +23,9 @@ namespace Cines_Flagg.Controllers
         public IActionResult Index()
         {
             //aca va usuarioActual
-            Usuario usuario = _context.usuarios.Where(usuario => usuario.ID == 1).FirstOrDefault();
-            return View(usuario);
+            Usuario usuarioActual = JsonConvert.DeserializeObject<Usuario>(HttpContext.Session.GetString("objetoUsuario"));
+           // Usuario usuario = _context.usuarios.Where(usuario => usuario.ID == 1).FirstOrDefault();
+            return View(usuarioActual);
         }
 
         public IActionResult MisFunciones() 

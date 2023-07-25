@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿ @{
+     var usuarioActual =  Context.Session.GetInt32("idUsuarioActual");
+  }
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -43,25 +47,29 @@
                         <li class="nav-item">  
                             <a class="nav-link text-light fs-4" asp-area="" asp-controller="Funcions" asp-action="Index">ABM Funciones</a>
                         </li>                  
-                        <li class="nav-item">  
-                            <a class="nav-link text-light fs-4" asp-area="" asp-controller="MiUsuario" asp-action="Index">Mis Datos</a>
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-light fs-4" asp-area="" asp-controller="Cartelera" asp-action="Index">Cartelera</a>
                         </li>
-                        <li class="nav-item border border-2 border-light">
+                        @if (usuarioActual == null) { 
+                            <li class="nav-item border-light btn btn-primary ml-auto">
                             <a class="nav-link text-light fs-4" asp-area="" asp-controller="Login" asp-action="Index">Login</a>
-                        </li>
-                        <li class="nav-item border border-2 border-light">
+                            </li>
+                            <li class="nav-item border-light btn btn-primary">
                             <a class="nav-link text-light fs-4" asp-area="" asp-controller="Register" asp-action="Index">Registro</a>
-                        </li>
-                        <li class="nav-item border border-2 border-light">
-                            <a class="nav-item text-light fs-4" >@if (ViewBag.UsuarioActual != null){ @ViewBag.UsuarioActual; }</a>
-                        </li>
+                            </li>
+                        }else
+                        {
+                            <li class="nav-item ml-auto">
+                                <a class="text-light fs-4" asp-controller="MiUsuario" asp-action="Index"><img width="50px" height="50px" src="/img/usuario.png"/>MIS DATOS</a>
+                            </li>
+                            <li class="nav-item text-light fs-4 ml-2">
+                                @Html.ActionLink("Cerrar Sesión", "CerrarSesion", "Cartelera", null, new { @class = "btn btn-warning"})
+                            </li>
+                        }                           
                     </ul>
                 </div>
             </div>
-        </nav>
+        </nav> 
     </header>
     <div class="container">
         <main role="main" class="pb-3">

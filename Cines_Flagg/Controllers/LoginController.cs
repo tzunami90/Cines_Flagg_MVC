@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Cines_Flagg.Models;
 using System.Web;
-using System.Diagnostics;
+//using System.Diagnostics;
+using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cines_Flagg.Controllers
@@ -31,11 +32,18 @@ namespace Cines_Flagg.Controllers
                 bool isValidUser = ValidateUser(model.Mail,model.Password);
                 if (isValidUser)
                 {
-                    Debug.WriteLine(model.Nombre);
+                    //Debug.WriteLine(model.Nombre);  
                     // Aquí puedes guardar información del usuario en la sesión si es necesario
                     HttpContext.Session.SetString("logueado", "si");
                     // Redirigir al controlador y acción que representan la página de inicio después del inicio de sesión exitoso
-                    HttpContext.Session.SetInt32("idUsuarioActual", model.ID);
+
+                    int idUsuarioActual = _context.usuarios.Where(u => u.Mail == model.Mail ).FirstOrDefault().ID;
+                    HttpContext.Session.SetInt32("idUsuarioActual", idUsuarioActual);
+                    HttpContext.Session.SetString("logueado", "si");
+
+                    Usuario objetoUsuario = _context.usuarios.Where( usuario => usuario.ID == idUsuarioActual).FirstOrDefault();
+                    HttpContext.Session.SetString("objetoUsuario", JsonConvert.SerializeObject(objetoUsuario));
+
                     return RedirectToAction("Index", "Cartelera");
                 }
                 else
@@ -50,7 +58,6 @@ namespace Cines_Flagg.Controllers
         // Método para validar las credenciales del usuario en la base de datos
         private bool ValidateUser(string mail, string password)
         {
-
             try
             {
                 /*string mailU = mail;
@@ -90,36 +97,9 @@ namespace Cines_Flagg.Controllers
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
+                //Debug.WriteLine(ex);
                 return false;
             }
-        }
-
-        /* [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Login(Usuario model, string mail, string pass)
-        {
-            if (ModelState.IsValid)
-            {
-                // Lógica para validar las credenciales del usuario en la base de datos
-                var validarUsuario = _context.usuarios.FirstOrDefault(u => u.Mail == mail);//model.Mail
-                bool isValidUser = ValidateUser(model.Mail, model.Password);
-
-                if (validarUsuario != null && validarUsuario.Password == pass)//model.Password
-                {
-                    // Aquí puedes guardar información del usuario en la sesión si es necesario
-                    HttpContext.Session.SetString("logueado", "si");
-                    // Redirigir al controlador y acción que representan la página de inicio después del inicio de sesión exitoso
-                    return RedirectToAction("Index", "Cartelera");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Credenciales inválidas. Inténtalo de nuevo.");
-                    return RedirectToAction("Index", "Login");
-                }
-            }
-
-            return View(model);
-        }*/
+        }        
     }
 }

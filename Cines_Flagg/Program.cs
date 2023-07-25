@@ -49,6 +49,7 @@ namespace Cines_Flagg
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.MapControllerRoute( //Ruta por defecto el index del HOME. Si queremos podemos poner por defecto otro (ej login)
                 name: "default",
