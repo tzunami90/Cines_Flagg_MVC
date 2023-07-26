@@ -22,39 +22,37 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm text-light navbar-light border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm text-light navbar-light border-bottom box-shadow mb-3" style="padding-left: 200px; padding-right: 200px;">
             <div class="container-fluid">
                 
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img width="120px" typeof="image/png" src="/img/icflagg.png"/></a>
+                <a class="navbar-brand m-0" style="padding-right: 50px;" asp-area="" asp-controller="Cartelera" asp-action="Index"><img width="100px" typeof="image/png" src="/img/icflagg.png" /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">     
+                    <ul class="navbar-nav flex-grow-1 align-items-center">          
                         <li class="nav-item">
-                            <a class="nav-link text-light fs-4" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>                  
-                        <li class="nav-item">  
-                            <a class="nav-link text-light fs-4" asp-area="" asp-controller="Usuarios" asp-action="Index">ABM Usuarios</a>
-                        </li>                  
-                        <li class="nav-item">  
-                            <a class="nav-link text-light fs-4" asp-area="" asp-controller="Peliculas" asp-action="Index">ABM Peliculas</a>
-                        </li>                  
-                        <li class="nav-item">  
-                            <a class="nav-link text-light fs-4" asp-area="" asp-controller="Salas" asp-action="Index">ABM Salas</a>
-                        </li>                         
-                        <li class="nav-item">  
-                            <a class="nav-link text-light fs-4" asp-area="" asp-controller="Funcions" asp-action="Index">ABM Funciones</a>
-                        </li>                  
-                        <li class="nav-item">
-                            <a class="nav-link text-light fs-4" asp-area="" asp-controller="Cartelera" asp-action="Index">Cartelera</a>
+                            <div class="dropdown show">
+                                <a class="dropdown-toggle nav-link text-light fs-4" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    ABM´s
+                                </a>    
+                                <div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index">ABM Usuarios</a>
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Peliculas" asp-action="Index">ABM Peliculas</a>
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Salas" asp-action="Index">ABM Salas</a>
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Funcions" asp-action="Index">ABM Funciones</a>
+                                </div>
+                            </div>
+                        </li>                
+                        <li class="nav-item btn btn-warning p-0 ml-1">
+                            <a class="nav-link text-dark fs-5 fw-bold"  asp-area="" asp-controller="Cartelera" asp-action="Index">Ver Cartelera</a>
                         </li>
                         @if (usuarioActual == null) { 
-                            <li class="nav-item border-light btn btn-primary ml-auto">
+                            <li class="nav-item border-light btn btn-primary ml-auto p-0 m-2">
                             <a class="nav-link text-light fs-4" asp-area="" asp-controller="Login" asp-action="Index">Login</a>
                             </li>
-                            <li class="nav-item border-light btn btn-primary">
+                            <li class="nav-item border-light btn btn-primary p-0 m-2">
                             <a class="nav-link text-light fs-4" asp-area="" asp-controller="Register" asp-action="Index">Registro</a>
                             </li>
                         }else
@@ -77,9 +75,9 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - Cines_Flagg - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="border-top mt-2 text-muted bg-black">
+        <div class="container text-light text-center">
+            &copy; Copyright 2023 - Cines FLAGG - Derechos Reservados <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
