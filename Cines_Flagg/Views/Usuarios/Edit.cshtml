@@ -57,7 +57,9 @@
                 <input asp-for="IntentosFallidos" class="form-control" />
                 <span asp-validation-for="IntentosFallidos" class="text-danger"></span>
             </div>
+                    @Html.EditorFor(model => model.Bloqueado)
             <div class="form-group form-check">
+                     
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Bloqueado" /> @Html.DisplayNameFor(model => model.Bloqueado)
                 </label>
@@ -72,7 +74,9 @@
                 <input asp-for="FechaNacimiento" class="form-control" />
                 <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
             </div>
+                    @Html.EditorFor(model => model.EsAdmin)
             <div class="form-group form-check">
+                       
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="EsAdmin" checked="" /> @Html.DisplayNameFor(model => model.EsAdmin)
                 </label>
