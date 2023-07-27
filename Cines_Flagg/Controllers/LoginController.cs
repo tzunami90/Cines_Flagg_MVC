@@ -44,11 +44,16 @@ namespace Cines_Flagg.Controllers
                     Usuario objetoUsuario = _context.usuarios.Where( usuario => usuario.ID == idUsuarioActual).FirstOrDefault();
                     HttpContext.Session.SetString("objetoUsuario", JsonConvert.SerializeObject(objetoUsuario));
 
+                 
+                    TempData["PlayLoginSound"] = true; // Almacena la bandera para reproducir el sonido
+
+                    //Redireccion
                     return RedirectToAction("Index", "Cartelera");
                 }
                 else
                 {
-                    TempData["MensajeErrorLogin"] = "Credenciales inválidas. Inténtalo de nuevo.";                    
+                    TempData["MensajeErrorLogin"] = "Credenciales inválidas. Inténtalo de nuevo.";
+                    TempData["PlayErrorSound"] = true; // Almacena la bandera para reproducir el sonido
                     return RedirectToAction("Index", "Login");
                 }
             }

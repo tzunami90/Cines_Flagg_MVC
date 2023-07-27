@@ -55,6 +55,8 @@ namespace Cines_Flagg.Controllers
 
             HttpContext.Session.SetString("objetoUsuario", JsonConvert.SerializeObject(usuario));
 
+            TempData["PlayCreditSound"] = true; // Almacena la bandera para reproducir el sonido
+
             return RedirectToAction(nameof(Index));
         }
 

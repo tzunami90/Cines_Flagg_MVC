@@ -2,6 +2,28 @@
 @{
     ViewData["Title"] = "Index";
 }
+
+<!-- Agregar referencias a los archivos de sonido -->
+<audio id="creditSound" src="~/sounds/Credito.mp3"></audio>
+<!-- Script para reproducir el sonido -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/json2/20160511/json2.js"></script>
+<script>
+    function playSound(soundId) {
+        var sound = document.getElementById(soundId);
+        sound.play();
+    }
+
+    // Verificar si se debe reproducir el sonido después del inicio de sesión exitoso
+    $(document).ready(function () {
+        var playLoginSound = JSON.parse('@Html.Raw(Json.Serialize(TempData["PlayCreditSound"] ?? false))');
+        if (playLoginSound) {
+            playSound('creditSound');
+        }
+    });
+</script>
+
+
 <!DOCTYPE html>
 <html>
 <head>
