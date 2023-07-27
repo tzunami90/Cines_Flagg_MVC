@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Cines_Flagg.Models;
+using System.Diagnostics;
 
 namespace Cines_Flagg.Controllers
 {
@@ -147,11 +148,23 @@ namespace Cines_Flagg.Controllers
             var sala = await _context.salas.FindAsync(id);
             if (sala != null)
             {
-                _context.salas.Remove(sala);
+                IEnumerable<Funcion> misFunciones = sala.MisFunciones.Where(funcion => funcion.Fecha >= DateTime.Now);
+
+                if (misFunciones == null) //VALIDA SI NO TIENE FUNCIONES POSTERIORES A HOY AL ELIMINARLA
+                {
+                    _context.salas.Remove(sala);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                else //SI TIENE FUNCIONES NO ELIMINA
+                {
+                    ModelState.AddModelError("Salas", "No es posible eliminar la sala ya que tiene funciones asociadas");
+                    return RedirectToAction(nameof(Index));
+                }
+                
             }
-            
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+
         }
 
         private bool SalaExists(int id)

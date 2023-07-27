@@ -32,12 +32,14 @@ namespace Cines_Flagg.Controllers
                 {
                     _context.Add(model);
                     await _context.SaveChangesAsync();
-                    ViewBag.SuccessMessage = "Registro Exitoso";
+                    TempData["Mensaje"] = "Registro Exitoso";
                     return RedirectToAction("Index", "Login");   
                 }
                 else
                 {
-                    ModelState.AddModelError("Usuario", "Ya existe un usuario con este Mail");
+                    //ModelState.AddModelError("", "Ya existe un usuario con este Mail o DNI");
+                    TempData["MensajeError"] = "Ya existe un usuario con este Mail o DNI";
+                    ViewBag.ShowModal = true;
                     return RedirectToAction("Index", "Register");
                 }
             }
@@ -63,7 +65,6 @@ namespace Cines_Flagg.Controllers
                 Debug.WriteLine(ex);
                 return false;
             }
-        }
-
+        }       
     }
 }

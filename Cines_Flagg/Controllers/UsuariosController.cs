@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Cines_Flagg.Models;
+using System.Diagnostics;
 
 namespace Cines_Flagg.Controllers
 {
@@ -59,11 +60,44 @@ namespace Cines_Flagg.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(usuario);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                bool isValidUser = ValidateUser(usuario.Mail, usuario.DNI);
+
+                if (isValidUser) //El usuario no existe entonces lo creo
+                {
+                    _context.Add(usuario);
+                    await _context.SaveChangesAsync();
+                    ViewBag.SuccessMessage = "Registro Exitoso";
+                    return RedirectToAction(nameof(Index));
+                }
+                else //El usuario ya existe con el mail o dni ingresados
+                {
+                    ModelState.AddModelError("Usuario", "Ya existe un usuario con este Mail");
+                    return RedirectToAction("Index", "Register");
+                }
             }
             return View(usuario);
+        }
+        //VALIDADOR MAIL O DNI EXISTENTE
+        private bool ValidateUser(string Mail, int DNI)
+        {
+            try
+            {
+                _context.usuarios.Load();
+                Usuario usr = _context.usuarios.Where(u => u.Mail == Mail || u.DNI == DNI).FirstOrDefault();
+                if (usr != null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return false;
+            }
         }
 
         // GET: Usuarios/Edit/5
@@ -146,7 +180,17 @@ namespace Cines_Flagg.Controllers
             }
             var usuario = await _context.usuarios.FindAsync(id);
             if (usuario != null)
-            {
+            {//DEVOLVEMOS EL DINERO POR FUNCIONES POSTERIORES
+                List<UsuarioFuncion> usuarioFuncion = _context.UF.Where(uf => uf.idUsuario == id).ToList();
+                foreach (UsuarioFuncion uf in usuarioFuncion)
+                {
+                    if (uf.MiFuncion.Fecha >= DateTime.Now)
+                    {
+                        uf.MiUsuario.Credito += uf.cantidadCompra * uf.MiFuncion.Costo;
+                        _context.usuarios.Update(uf.MiUsuario);
+                        _context.SaveChanges();
+                    }
+                }
                 _context.usuarios.Remove(usuario);
             }
             

@@ -2,13 +2,28 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Iniciar sesión</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" />
+    <head>
+        <!-- ... Otras etiquetas ... -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="icon" type="image/png" href="../img/icono.png">
+    </head>
+</head>
+<body>
+ 
 <h1>Mi Usuario</h1>
 
 <div class="container">
     <div class="row d-flex justify-content-center">
         <div class="col-4 border border-2 p-5 rounded-3 me-5">
+            
             <form id="form_datos_usuario" asp-action="Edit">
+                <input type="hidden" asp-for="ID" />
                 <div class="row form-group">
                     <label asp-for="Nombre" class="control-label"></label>
                     <input asp-for="Nombre" value=@Model.Nombre />
@@ -21,28 +36,30 @@
                 </div>
                 <div class="row form-group">
                     <label asp-for="DNI" class="control-label"></label>
-                    <input asp-for="DNI" value=@Model.DNI />
+                    <input asp-for="DNI" value=@Model.DNI disabled="disabled"/>
                     <span asp-validation-for="DNI" class="text-danger"></span>
                 </div>
                 <div class="row form-group">    
                     <label asp-for="Mail" class="control-label"></label>
-                    <input asp-for="Mail" value=@Model.Mail />
+                    <input asp-for="Mail" value=@Model.Mail disabled="disabled"/>
                     <span asp-validation-for="Mail" class="text-danger"></span>
-                </div>
-                <div class="row form-group">
-                    <label for="mostrarCredito" class="control-label">Crédito</label>
-                    <input name="mostrarCredito" value=@Model.Credito disabled="disabled" />
                 </div>
                 <div class="row form-group">
                     <label asp-for="FechaNacimiento" class="control-label"></label>
                     @Html.EditorFor(model => model.FechaNacimiento, new { htmlAttributes = new { @class = "datepicker", @type="datetime-local" } })
                     @Html.ValidationMessageFor(model => model.FechaNacimiento, "", new { @class = "text-danger" })
                 </div>
+                <div class="row form-group">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" value=@Model.Password />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
                 <div class="row form-group mt-3">
                     <div class="col-4 p-0">
-                        <button type="submit" form="form_datos_usuario" class="btn btn-primary">Modificar</button>
+                        <button type="submit" asp-controller="MiUsuario" asp-action="Edit" form="form_datos_usuario" class="btn btn-primary">Modificar</button>
                     </div>
                 </div>
+
             </form>
         </div>
 
@@ -54,17 +71,26 @@
             </div>
             <form id="form_cargar_credito" asp-action="CargarCredito">
                 <div class="row mt-5 border border-3 rounded-3 p-2">
+                    <input type="hidden" asp-for="ID" name="ID" />                        
                     <div class="col">
-                        <label for="monto" class="control-label">Crédito a cargar</label>
-                        <input type="number" name="monto" />
-                        <span asp-validation-for="Credito" class="text-danger"></span>
+                        <div class="row">
+                            <label for="mostrarCredito" class="control-label">Crédito</label>
+                                <input name="mostrarCredito" value=@Model.Credito disabled="disabled"/>
+                        </div>                       
+                            <label for="monto" class="control-label">Crédito a cargar</label>
+                            <input type="number" name="monto" />
+                            <span asp-validation-for="Credito" class="text-danger"></span>
                     </div>
                     <div class="col-12 mt-2">
-                        <button form="form_cargar_credito" type="submit" class="btn btn-primary" asp-route-id="@Model.ID">Cargar crédito</button>
+                        <button form="form_cargar_credito" type="submit" class="btn btn-primary">Cargar crédito</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
+ 
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

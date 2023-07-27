@@ -67,9 +67,9 @@ namespace Cines_Flagg.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,idSala,idPelicula,Fecha,CantClientes,Costo")] Funcion funcion)
         {
-      
             if (ModelState.IsValid)
             {
+                _context.funciones.Include(funcion => funcion.MiSala).Include(funcion => funcion.MiPelicula);
 
                 funcion.MiSala = _context.salas.Where(sala => sala.ID == funcion.MiSala.ID).FirstOrDefault();
                 funcion.MiPelicula = _context.peliculas.Where(pelicula => pelicula.ID == funcion.MiPelicula.ID).FirstOrDefault();

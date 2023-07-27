@@ -48,7 +48,7 @@ namespace Cines_Flagg.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Credenciales inválidas. Inténtalo de nuevo.");
+                    TempData["MensajeErrorLogin"] = "Credenciales inválidas. Inténtalo de nuevo.";                    
                     return RedirectToAction("Index", "Login");
                 }
             }

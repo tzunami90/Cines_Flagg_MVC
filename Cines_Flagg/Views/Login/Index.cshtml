@@ -18,11 +18,17 @@
 <body>
     <div class="container">
         <h2>Iniciar sesión</h2>
-        @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+        @if (TempData["Mensaje"] != null)
         {
             <div class="alert alert-success">
-                @ViewBag.SuccessMessage
+                @TempData["Mensaje"]
             </div>        
+        }
+        @if (TempData["MensajeErrorLogin"] !=null)
+        {
+            <div class="alert alert-danger">
+                @TempData["MensajeErrorLogin"]
+            </div>         
         }
         @using (Html.BeginForm("Login", "Login", FormMethod.Post))
         {
@@ -44,7 +50,7 @@
 
             <div class="form-group">
                 <input type="submit" value="Login" class="btn btn-primary" />
-            </div>
+            </div>            
         }
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
