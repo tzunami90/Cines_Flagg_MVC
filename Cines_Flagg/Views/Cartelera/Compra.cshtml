@@ -1,5 +1,7 @@
-﻿@{
+﻿@model IEnumerable<Cines_Flagg.Models.Funcion>
+@{
     ViewData["Title"] = "Compra";
+
 }
 <!DOCTYPE html>
 <html>
@@ -18,36 +20,50 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
+        @if (TempData["Mensaje"] != null)
+        {
+           <div class="alert alert-warning">
+               @TempData["Mensaje"]
+           </div>        
+        }
             <h2 class="text-center">@ViewBag.NombrePelicula</h2>
         </div>
     </div>
-    <div class="row">
+    <div class="row">      
         <div class="col-md-6 offset-md-3">
             <div class="card">
-                <div class="card-body">
-                    <form>
-                        <div class="form-group">
-                            <select name="sala" id="sala" class="form-control">
-                                <option value="" selected disabled>Seleccionar Sala</option>
-                                @foreach (var sala in ViewBag.Salas)
-                                {
-                                    <option value="@sala.ID">@sala.Ubicacion</option>
-                                }
-                            </select>
-                        </div>
+                <div class="card-body"> 
+                    
+                 <div class="table-responsive-sm">
+                    <table class="table table-bordered">
+                    <thead>
+                          <tr>
+                            <th>Sala</th>
+                            <th>Fecha</th>
+                            <th>Costo</th>
+                            <th>Comprar</th>                            
+                          </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var funcion in Model)
+                         {
+                          <tr> 
+                            <td type="number" name="idFuncion" id="idFuncion" hidden>@funcion.ID</td>
+                            <td>@funcion.MiSala.Ubicacion</td>
+                            <td>@funcion.Fecha.Date.ToString("dd-MM-yyyy")</td>
+                            <td>@funcion.Costo</td>                            
+                            <td><form method="post"  asp-controller="Cartelera" asp-action="ComprarEntrada" >
+                                <input type="number" id="idFuncion" name="idFuncion" value="@funcion.ID" readonly/>
+                                <input type="number" id="cant" name="cant" required/>
+                                <button type="submit"class="btn btn-danger">Comprar</button>
+                                </form>
+                            </td>     
+                          </tr>
+                           }
+                    </tbody>
+                    </table>
+                </div>   
 
-                        <div class="form-group" id="funcion-group" style="display: none;">
-                            <select name="funcion" id="funcion" class="form-control">
-                                <option value="" selected disabled>Seleccionar Función</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group" id="costo-group" style="display: none;">
-                            <select name="costo" id="costo" class="form-control">
-                                <option value="" selected disabled>Seleccionar Costo</option>
-                            </select>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -57,61 +73,3 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </body>
 </html>
-<script>
-    var salaSelect = document.getElementById('sala');
-    var funcionGroup = document.getElementById('funcion-group');
-    var funcionSelect = document.getElementById('funcion');
-    var costoGroup = document.getElementById('costo-group');
-    var costoSelect = document.getElementById('costo');
-
-    salaSelect.addEventListener('change', function () {
-        var salaValue = salaSelect.value;
-
-        funcionGroup.style.display = 'block';
-        updateFuncionOptions(salaValue);
-
-        costoGroup.style.display = 'none';
-    });
-
-    funcionSelect.addEventListener('change', function () {
-
-        var funcionValue = funcionSelect.value;
-
-        costoGroup.style.display = 'block';
-        updateCostoOptions(funcionValue);
-    });
-
-    function updateFuncionOptions(salaValue) {
-
-        funcionSelect.innerHTML = '<option value="" selected disabled>Seleccionar Función</option>';
-
-        var funciones = @Html.Raw(Json.Serialize(ViewBag.Funciones));
-        var filteredFunciones = funciones.filter(function (funcion) {
-            return funcion.SalaId === salaValue;
-        });
-
-        filteredFunciones.forEach(function (funcion) {
-            var option = document.createElement('option');
-            option.value = funcion.Id;
-            option.textContent = funcion.Nombre;
-            funcionSelect.appendChild(option);
-        });
-    }
-
-    function updateCostoOptions(funcionValue) {
-
-        costoSelect.innerHTML = '<option value="" selected disabled>Seleccionar Costo</option>';
-
-        var costos = @Html.Raw(Json.Serialize(ViewBag.Costos));
-        var filteredCostos = costos.filter(function (costo) {
-            return costo.FuncionId === funcionValue;
-        });
-
-        filteredCostos.forEach(function (costo) {
-            var option = document.createElement('option');
-            option.value = costo.Id;
-            option.textContent = costo.Nombre;
-            costoSelect.appendChild(option);
-        });
-    }
-</script>

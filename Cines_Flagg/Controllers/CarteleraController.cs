@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using System.Web;
 using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace Cines_Flagg.Controllers
 {
@@ -84,40 +86,113 @@ namespace Cines_Flagg.Controllers
         {
 
             if (HttpContext.Session.GetString("logueado") == null)
-            {               
+            {
                 return RedirectToAction("Index", "Login");
             }
             else
             {
                 ViewBag.NombrePelicula = nombrePelicula;
 
-                var salas = _context.funciones
-                    .Where(f => f.MiPelicula.Nombre == nombrePelicula)
-                    .Select(f => f.MiSala)
-                    .Distinct()
-                    .ToList();
-
-
                 var funciones = _context.funciones
-                    .Where(f => f.MiPelicula.Nombre == nombrePelicula)
-                    .Select(f => f.Fecha)
-                    .Distinct()
-                    .ToList();
+                      .Include(f => f.MiPelicula)
+                      .Include(f => f.MiSala)
+                      .Where(f => f.MiPelicula.Nombre == nombrePelicula && f.Fecha.Date >= DateTime.Now.Date        )
+                      .ToList();
+
+                ViewBag.Funciones = funciones;  
+
+                return View(funciones);
+            }
+        }
 
 
-                var costos = _context.funciones
-                    .Where(f => f.MiPelicula.Nombre == nombrePelicula)
-                    .Select(f => f.Costo)
-                    .Distinct()
-                    .ToList();
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public IActionResult ComprarEntrada(int idFuncion, int cant)
+        {
+            int? idUsuario = HttpContext.Session.GetInt32("idUsuarioActual");
 
+            try
+            {
+                Usuario usuario = _context.usuarios.Where(u => u.ID == idUsuario).FirstOrDefault();
+                Funcion funcion = _context.funciones.Where(f => f.ID == idFuncion).Include(f=>f.MiSala).Include(f=>f.MiPelicula).FirstOrDefault();
 
-                ViewBag.Salas = salas;
-                ViewBag.Funciones = funciones;
-                ViewBag.Costos = costos;
+                double importe;
+                int entradasDispoibles;
 
-                return View();
-            }            
+                if (usuario != null && funcion != null)
+                {
+                    // Se busca en tabla intermedia para ver si existe la relacion usuario / funcion (si existe el clietne tiene entradas)
+                    UsuarioFuncion usuarioFuncion = _context.UF.Where(uf => uf.idUsuario == idUsuario && uf.idFuncion == idFuncion).FirstOrDefault();
+
+                    importe = funcion.Costo * cant;
+                    entradasDispoibles = funcion.MiSala.Capacidad - funcion.CantClientes;
+
+                    if (importe > usuario.Credito)
+                    {
+                        TempData["Mensaje"] = "No tiene crédito para comprar la cantidad de entradas indicada.";
+
+                        ViewBag.NombrePelicula = funcion.MiPelicula.Nombre;
+                        return RedirectToAction("Compra", new { nombrePelicula = funcion.MiPelicula.Nombre });
+                    }
+                    else if (entradasDispoibles < cant)
+                    {
+                        TempData["Mensaje"] = "No hay mas asientos en la sala disponibles para la cantidad de entradas que solicita";
+
+                        ViewBag.NombrePelicula = funcion.MiPelicula.Nombre;
+                        // return RedirectToAction(nameof(Compra));
+                        return RedirectToAction("Compra", new { nombrePelicula = funcion.MiPelicula.Nombre});
+                    }
+                    else
+                    {
+                        if (usuarioFuncion != null)// Compra si el usuario tiene funciones compradas
+                        {
+                            funcion.CantClientes += cant; //se suman clientes a al objeto funcion
+                            usuario.Credito -= importe; //se resta dinero al objeto usuario
+                            usuarioFuncion.cantidadCompra += cant;//se agrega la cantidad en el objeto para la tabla intermedia 
+
+                            _context.UF.Update(usuarioFuncion); //Se actualiza usuario funcion, ya que se agregaron mas cantidades de entradas compradas
+                            _context.funciones.Update(funcion);//Se actualiza funcion para restar la cantidad de entradas disponibles para una funcion
+                            _context.usuarios.Update(usuario); //se actualiza usuario para restar crédito
+                            _context.SaveChanges();
+
+                            TempData["Mensaje"] = "Compra realizada con exito";
+
+                            return View("Index", "Cartelera");
+                        }
+                        else //Compra de 0
+                        {
+                            UsuarioFuncion UF = new UsuarioFuncion { MiUsuario = usuario, MiFuncion = funcion, cantidadCompra = cant };                            
+
+                            usuario.MisFunciones.Add(funcion); //Al usuario se le agrega la funcion que compro a su lista de funciones
+                            usuario.Credito -= importe; //Resto credito al usuario
+                            funcion.Clientes.Add(usuario); //A la funcion se le agrega el usuario a la lista de CLientes
+                            funcion.CantClientes += cant;// A la funcion se se le agrega la cantidad de cliente que compraron esa funcion                    
+                            _context.UF.Add(UF); // Se agrega las relacion entre el usuario y las funciones
+                            _context.usuarios.Update(usuario); //Se actualiza el usuario restandole credito
+                            _context.funciones.Update(funcion); //Se actualiza la funcion restando disponibilidad de la sala
+                            _context.SaveChanges();
+
+                            TempData["Mensaje"] = "Compra realizada con exito";
+                            return View("Index", "Cartelera");
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    TempData["Mensaje"] = "No se a podido ingresar la compra";
+                    ViewBag.NombrePelicula = funcion.MiPelicula.Nombre;
+                    return RedirectToAction("Compra", new { nombrePelicula = funcion.MiPelicula.Nombre });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Mensaje"] = "Objeto o ID no encontrado";
+
+                return RedirectToAction(nameof(Compra));
+            }
         }
     }
 }
