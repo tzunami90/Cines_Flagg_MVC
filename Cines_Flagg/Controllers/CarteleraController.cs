@@ -25,8 +25,7 @@ namespace Cines_Flagg.Controllers
 
         }
 
-
-        public ActionResult CerrarSesion()
+    public ActionResult CerrarSesion()
         {
             // Eliminar las variables de sesión relacionadas con el usuario
             HttpContext.Session.Clear(); // O puedes utilizar Session.Remove("nombreVariable") para eliminar variables específicas.
@@ -112,6 +111,11 @@ namespace Cines_Flagg.Controllers
         {
             int? idUsuario = HttpContext.Session.GetInt32("idUsuarioActual");
 
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+
             try
             {
                 Usuario usuario = _context.usuarios.Where(u => u.ID == idUsuario).FirstOrDefault();
@@ -157,8 +161,9 @@ namespace Cines_Flagg.Controllers
                             _context.SaveChanges();
 
                             TempData["Mensaje"] = "Compra realizada con exito";
+                            HttpContext.Session.SetString("objetoUsuario", JsonConvert.SerializeObject(usuario));
 
-                            return View("Index", "Cartelera");
+                            return View("Index", _context.peliculas.ToList());
                         }
                         else //Compra de 0
                         {
@@ -174,11 +179,10 @@ namespace Cines_Flagg.Controllers
                             _context.SaveChanges();
 
                             TempData["Mensaje"] = "Compra realizada con exito";
-                            return View("Index", "Cartelera");
+                            HttpContext.Session.SetString("objetoUsuario", JsonConvert.SerializeObject(usuario));
+                            return View("Index", _context.peliculas.ToList());
                         }
-
                     }
-
                 }
                 else
                 {
@@ -190,6 +194,7 @@ namespace Cines_Flagg.Controllers
             catch (Exception ex)
             {
                 TempData["Mensaje"] = "Objeto o ID no encontrado";
+                Console.WriteLine(ex.ToString());
 
                 return RedirectToAction(nameof(Compra));
             }

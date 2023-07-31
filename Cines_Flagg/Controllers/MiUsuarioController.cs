@@ -51,6 +51,7 @@ namespace Cines_Flagg.Controllers
             usuario.Credito = creditoNuevo;
 
             _context.usuarios.Update(usuario);
+            
             _context.SaveChanges();
 
             HttpContext.Session.SetString("objetoUsuario", JsonConvert.SerializeObject(usuario));
