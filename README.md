@@ -1,4 +1,4 @@
-# Proyecto Sistema de cines "Cines FLAGG"
+# Proyecto Sistema de cines WEB "Cines FLAGG"
 ## Creadores:
 F- Franco Ouro
 L- Lucas Marenco
