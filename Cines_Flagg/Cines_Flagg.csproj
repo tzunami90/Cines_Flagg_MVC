@@ -6,8 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Cartelera\Compra - Copia.cshtml" />
+    <Content Remove="Views\Cartelera\Index - Copia.cshtml" />
     <Content Remove="wwwroot\img\icflagg.png" />
     <Content Remove="wwwroot\sounds\Login.mp3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Views\Cartelera\CompraSala" />
+    <None Remove="Views\Cartelera\fgfg" />
+    <None Remove="Views\Cartelera\IndexSala" />
   </ItemGroup>
 
   <ItemGroup>

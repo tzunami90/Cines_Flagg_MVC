@@ -7,7 +7,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>ABM Funciones</title>
+    <title>Busqueda por Sala</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" />
     <head>
         <!-- ... Otras etiquetas ... -->
@@ -26,7 +26,7 @@
                @TempData["MensajeCompra"]
            </div>        
         }
-            <h2 class="text-center">@ViewBag.NombrePelicula</h2>
+            <h2 class="text-center">@ViewBag.Ubicacion</h2>
         </div>
     </div>
     <div class="row">
@@ -47,7 +47,9 @@
                     <table class="table table-bordered" id="tabla-funciones">
                     <thead>
                           <tr>
-                            <th>Sala</th>
+                            <th>Pelicula</th>
+                            <th>Sinopsis</th>
+                            <th>Duracion</th>
                             <th>Fecha</th>
                             <th>Costo</th>
                             <th>Comprar</th>                            
@@ -58,7 +60,9 @@
                          {
                           <tr> 
                             <td type="number" name="funcionID" id="funcionID" hidden>@funcion.ID</td>
-                            <td>@funcion.MiSala.Ubicacion</td>
+                            <td>@funcion.MiPelicula.Nombre</td>       
+                            <td>@funcion.MiPelicula.Sinopsis</td>
+                            <td>@funcion.MiPelicula.Duracion</td>
                             <td>@funcion.Fecha.Date.ToString("dd-MM-yyyy")</td>
                             <td>@funcion.Costo</td>                            
                             <td><form method="post"  asp-controller="Cartelera" asp-action="ComprarEntrada" >

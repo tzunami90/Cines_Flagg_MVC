@@ -1,5 +1,6 @@
 using Cines_Flagg.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Cines_Flagg
 {
@@ -26,7 +27,6 @@ namespace Cines_Flagg
                 // Make the session cookie essential
                 options.Cookie.IsEssential = true;
             });
-
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();

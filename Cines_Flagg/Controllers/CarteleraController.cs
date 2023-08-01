@@ -25,8 +25,7 @@ namespace Cines_Flagg.Controllers
 
         }
 
-
-        public ActionResult CerrarSesion()
+    public ActionResult CerrarSesion()
         {
             // Eliminar las variables de sesión relacionadas con el usuario
             HttpContext.Session.Clear(); // O puedes utilizar Session.Remove("nombreVariable") para eliminar variables específicas.
@@ -112,6 +111,11 @@ namespace Cines_Flagg.Controllers
         {
             int? idUsuario = HttpContext.Session.GetInt32("idUsuarioActual");
 
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+
             try
             {
                 Usuario usuario = _context.usuarios.Where(u => u.ID == idUsuario).FirstOrDefault();
@@ -130,14 +134,14 @@ namespace Cines_Flagg.Controllers
 
                     if (importe > usuario.Credito)
                     {
-                        TempData["Mensaje"] = "No tiene crédito para comprar la cantidad de entradas indicada.";
+                        TempData["MensajeCompra"] = "No tiene crédito para comprar la cantidad de entradas indicada.";
 
                         ViewBag.NombrePelicula = funcion.MiPelicula.Nombre;
                         return RedirectToAction("Compra", new { nombrePelicula = funcion.MiPelicula.Nombre });
                     }
                     else if (entradasDispoibles < cant)
                     {
-                        TempData["Mensaje"] = "No hay mas asientos en la sala disponibles para la cantidad de entradas que solicita";
+                        TempData["MensajeCompra"] = "No hay mas asientos en la sala disponibles para la cantidad de entradas que solicita";
 
                         ViewBag.NombrePelicula = funcion.MiPelicula.Nombre;
                         // return RedirectToAction(nameof(Compra));
@@ -156,9 +160,10 @@ namespace Cines_Flagg.Controllers
                             _context.usuarios.Update(usuario); //se actualiza usuario para restar crédito
                             _context.SaveChanges();
 
-                            TempData["Mensaje"] = "Compra realizada con exito";
+                            TempData["MensajeCompra"] = "Compra realizada con exito";
+                            HttpContext.Session.SetString("objetoUsuario", JsonConvert.SerializeObject(usuario));
 
-                            return View("Index", "Cartelera");
+                            return View("Index", _context.peliculas.ToList());
                         }
                         else //Compra de 0
                         {
@@ -173,25 +178,55 @@ namespace Cines_Flagg.Controllers
                             _context.funciones.Update(funcion); //Se actualiza la funcion restando disponibilidad de la sala
                             _context.SaveChanges();
 
-                            TempData["Mensaje"] = "Compra realizada con exito";
-                            return View("Index", "Cartelera");
+                            TempData["MensajeCompra"] = "Compra realizada con exito";
+                            HttpContext.Session.SetString("objetoUsuario", JsonConvert.SerializeObject(usuario));
+                            return View("Index", _context.peliculas.ToList());
                         }
-
                     }
-
                 }
                 else
                 {
-                    TempData["Mensaje"] = "No se a podido ingresar la compra";
+                    TempData["MensajeCompra"] = "No se a podido ingresar la compra";
                     ViewBag.NombrePelicula = funcion.MiPelicula.Nombre;
                     return RedirectToAction("Compra", new { nombrePelicula = funcion.MiPelicula.Nombre });
                 }
             }
             catch (Exception ex)
             {
-                TempData["Mensaje"] = "Objeto o ID no encontrado";
+                TempData["MensajeCompra"] = "Objeto o ID no encontrado";
+                Console.WriteLine(ex.ToString());
 
                 return RedirectToAction(nameof(Compra));
+            }
+        }
+
+
+        public ActionResult IndexSala()
+        {
+
+            return View("IndexSala", _context.salas.ToList());
+        }
+
+        public IActionResult CompraSala(string nombreUbicacion)
+        {
+
+            if (HttpContext.Session.GetString("logueado") == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                ViewBag.Ubicacion = nombreUbicacion;
+
+                var funciones = _context.funciones
+                      .Include(f => f.MiPelicula)
+                      .Include(f => f.MiSala)
+                      .Where(f => f.MiSala.Ubicacion == nombreUbicacion && f.Fecha.Date >= DateTime.Now.Date)
+                      .ToList();
+
+                ViewBag.Funciones = funciones;
+
+                return View(funciones);
             }
         }
     }

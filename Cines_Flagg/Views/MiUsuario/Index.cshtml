@@ -68,8 +68,8 @@
                 </div>
                 <div class="row form-group">
                     <label asp-for="FechaNacimiento" class="control-label"></label>
-                    @Html.EditorFor(model => model.FechaNacimiento, new { htmlAttributes = new { @class = "datepicker", @type="datetime-local" } })
-                    @Html.ValidationMessageFor(model => model.FechaNacimiento, "", new { @class = "text-danger" })
+                    <input asp-for="FechaNacimiento" value=@Model.FechaNacimiento/>
+                    <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
                 </div>
                 <div class="row form-group">
                     <label asp-for="Password" class="control-label"></label>

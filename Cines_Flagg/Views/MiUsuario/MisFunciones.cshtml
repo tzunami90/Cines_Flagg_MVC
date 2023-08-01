@@ -3,18 +3,33 @@
     ViewData["Title"] = "MisFunciones";
 }
 
-<h1 class="center">Mis Funciones</h1>
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ABM Funciones</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" />
+
+<h1 class="center">Mis Funciones</h1>
+<!DOCTYPE html>
+        <!-- ... Otras etiquetas ... -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="icon" type="image/png" href="../img/icono.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <title>Mis Funiones</title>
 </head>
+
 <body>
     <div class="container">
         <h2>Historial</h2>
         <div class="row">
+        @if (TempData["MensajeDevolver"] != null)
+        {
+          <div class="alert alert-warning">
+              @TempData["MensajeDevolver"]
+         </div>        
+        }
              <div class="table-responsive-sm">
                 <table class="table table-bordered">
                     <thead>
@@ -33,15 +48,19 @@
                          {
                           <tr>                            
                             <td>@usuarioFuncion.MiFuncion.MiPelicula.Nombre</td>
-                            <td>@usuarioFuncion.MiFuncion.ID</td>
+                            <td>@usuarioFuncion.idFuncion</td>
                             <td>@usuarioFuncion.MiFuncion.MiSala.Ubicacion</td>
                             <td>@usuarioFuncion.MiFuncion.Fecha</td>
                             <td>@usuarioFuncion.cantidadCompra</td>
                             <td>@usuarioFuncion.MiFuncion.Costo</td>
-                            <td><form asp-action="devolverEntrada">
-                                <input type="number" id="cant" required/>
-                                <button type="submit" class="btn btn-danger">Devolver</button></form></td>                           
-                          </tr>
+                                <td>
+                                    <form asp-action="devolverEntrada" asp-controller="MiUsuario" asp-action="devolverEntrada">
+                                        <input type="number" id="idFuncion" name="idFuncion" value="@usuarioFuncion.idFuncion" readonly hidden />
+                                        <input type="number" id="cantidad" name="cantidad" required />
+                                        <button method="post" type="submit" class="btn btn-danger">Devolver</button>
+                                    </form>
+                                </td>
+                            </tr>
                            }
                     </tbody>
                 </table>
@@ -49,5 +68,7 @@
         </div>        
     </div>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+       
 </body>
 </html>

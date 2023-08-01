@@ -1,5 +1,5 @@
 ﻿
-@model List<Pelicula>
+@model List<Sala>
 @{
     ViewData["Title"] = "Cartelera";
 }
@@ -95,7 +95,7 @@
 <body>
     <div class="container">
         <div class="container d-flex justify-content-center align-items-center" style="height: 10vh;">
-            <h2>Cartelera Cine Flagg</h2>            
+            <h2>Salas Cine Flagg</h2>            
         </div>
         @if (TempData["MensajeCompra"] != null)
             {
@@ -105,59 +105,27 @@
             }
     </div>
 
-    <div class="container mt-2">
-        <div id="carouselHome" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-                <li data-target="#carousel-home" data-slide-to="0" class="active"></li>
-                <li data-target="#carousel-home" data-slide-to="1"></li>
-                <li data-target="#carousel-home" data-slide-to="2"></li>
-            </ol>
-
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="https://www.todoshowcase.com/images/sliders/0000001379.jpg" class="d-block w-100" alt="Imagen 1">
-                </div>
-                <div class="carousel-item">
-                    <img src="https://www.todoshowcase.com/images/sliders/0000001383.jpg" class="d-block w-100" alt="Imagen 2">
-                </div>
-                <div class="carousel-item">
-                    <img src="https://www.todoshowcase.com/images/sliders/0000001378.jpg" class="d-block w-100" alt="Imagen 3">
-                </div>
-
-            </div>
-
-            <a class="carousel-control-prev" href="#carouselHome" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Anterior</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselHome" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Siguiente</span>
-            </a>
-        </div>
-    </div>
-
     <div class="container mt-5">
         <div class="row">
 
-            @foreach (var pelicula in Model)
+            @foreach (var sala in Model)
             {
                 <div class="col-md-3">
                     <div class="pelicula-container">
-                        <a asp-action="Compra" asp-route-nombrePelicula="@pelicula.Nombre">
+                        <a asp-action="CompraSala" asp-route-nombreUbicacion="@sala.Ubicacion">
 
                             <div class="poster-container">
-                                <img src="@pelicula.Poster" alt="@pelicula.Nombre" class="img-fluid pelicula-poster" />
+                                <img src="/img/LogoSala.jpg" alt="sala" class="img-fluid pelicula-poster" />
 
                                 <div class="sinopsis-container">
 
-                                    <p class="sinopsis">@pelicula.Sinopsis</p>
+                                    <p class="sinopsis">@sala.Ubicacion</p>
 
                                 </div>
 
                             </div>
                         </a>
-                        <p>@pelicula.Nombre</p>
+                        <p>@sala.Ubicacion</p>
                     </div>
                 </div>
 
@@ -165,17 +133,6 @@
 
         </div>
     </div>
-
-
-
-
-    <script>
-        $(document).ready(function () {
-            $('.carousel').carousel({
-                interval: 5000
-            });
-        });
-    </script>
 
 </body>
 </html>
