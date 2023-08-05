@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Cartelera";
 }
-<!-- Agregar referencias a los archivos de sonido -->
+<!-- SONIDO DE LOGIN -->
 <audio id="loginSound" src="~/sounds/Loginw.mp3"></audio>
 <!-- Script para reproducir el sonido -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -19,6 +19,23 @@
         var playLoginSound = JSON.parse('@Html.Raw(Json.Serialize(TempData["PlayLoginSound"] ?? false))');
         if (playLoginSound) {
             playSound('loginSound');
+        }
+    });
+</script>
+
+<!-- SONIDO DE COMPRA -->
+<audio id="compraSound" src="~/sounds/compra_existosa.mp3"></audio>
+<script>
+    function playSound(soundId) {
+        var sound = document.getElementById(soundId);
+        sound.play();
+    }
+
+    // Verificar si se debe reproducir el sonido después del inicio de sesión exitoso
+    $(document).ready(function () {
+        var playCompraSound = JSON.parse('@Html.Raw(Json.Serialize(TempData["playCompraSound"] ?? false))');
+        if (playCompraSound) {
+            playSound('compraSound');
         }
     });
 </script>

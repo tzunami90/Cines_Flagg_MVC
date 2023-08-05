@@ -39,47 +39,49 @@
        </div>
     </div>
 
-        <div class="col-md-6 mt-4 offset-md-3">
-            <div class="card">
-                <div class="card-body"> 
+        <div class="row">
+            <div class="col-md-12 mt-4 mx-auto">
+                <div class="card border border-5 border-danger">
+                    <div class="card-body"> 
                     
-                 <div class="table-responsive-sm">
-                    <table class="table table-bordered" id="tabla-funciones">
-                    <thead>
-                          <tr>
-                            <th>Pelicula</th>
-                            <th>Sinopsis</th>
-                            <th>Duracion</th>
-                            <th>Fecha</th>
-                            <th>Costo</th>
-                            <th>Comprar</th>                            
-                          </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var funcion in Model)
-                         {
-                          <tr> 
-                            <td type="number" name="funcionID" id="funcionID" hidden>@funcion.ID</td>
-                            <td>@funcion.MiPelicula.Nombre</td>       
-                            <td>@funcion.MiPelicula.Sinopsis</td>
-                            <td>@funcion.MiPelicula.Duracion</td>
-                            <td>@funcion.Fecha.Date.ToString("dd-MM-yyyy")</td>
-                            <td>@funcion.Costo</td>                            
-                            <td><form method="post"  asp-controller="Cartelera" asp-action="ComprarEntrada" >
-                                <input type="number" id="idFuncion" name="idFuncion" value="@funcion.ID" readonly hidden/>
-                                <input type="number" id="cant" name="cant" required/>
-                                <button type="submit"class="btn btn-danger">Comprar</button>
-                                </form>
-                            </td>     
-                          </tr>
-                           }
-                    </tbody>
-                    </table>
-                </div>   
+                     <div class="table-responsive-sm">
+                        <table class="table table-bordered" id="tabla-funciones">
+                        <thead>
+                              <tr>
+                                <th>Pelicula</th>
+                                <th>Sinopsis</th>
+                                <th>Duracion</th>
+                                <th>Fecha</th>
+                                <th>Costo</th>
+                                <th>Comprar</th>                            
+                              </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var funcion in Model)
+                             {
+                              <tr> 
+                                <td type="number" name="funcionID" id="funcionID" hidden>@funcion.ID</td>
+                                <td>@funcion.MiPelicula.Nombre</td>       
+                                <td><details><summary>Ver</summary><p>@funcion.MiPelicula.Sinopsis</p></details></td>
+                                <td>@funcion.MiPelicula.Duracion</td>
+                                <td>@funcion.Fecha.Date.ToString("dd-MM-yyyy")</td>
+                                <td>@funcion.Costo</td>                            
+                                <td><form method="post" id="comprar" asp-controller="Cartelera" asp-action="ComprarEntrada" >
+                                    <input type="number" id="idFuncion" name="idFuncion" value="@funcion.ID" readonly hidden/>
+                                    <input type="number" id="cant" name="cant" required/>
+                                    <button type="submit" class="border-0 bg-white"><img type="submit" src="/img/compra.png" height="50px" width="50px" /></button>
+                                    </form>
+                                </td>     
+                              </tr>
+                               }
+                        </tbody>
+                        </table>
+                    </div>   
 
+                    </div>
                 </div>
             </div>
-        </div>
+        </div><img src="C:\Users\asolo\Downloads\compra.png" />
     </div>
 </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

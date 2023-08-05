@@ -1,5 +1,5 @@
-﻿ @{
-     var usuarioActual =  Context.Session.GetInt32("idUsuarioActual");
+﻿@{
+    var usuarioActual =  Context.Session.GetInt32("idUsuarioActual");    
   }
 
 <!DOCTYPE html>
@@ -32,21 +32,22 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1 align-items-center">          
-                        
-                        <li class="nav-item">
-                            <div class="dropdown show">
-                                <a class="dropdown-toggle nav-link text-light fs-4" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    ABM´s
-                                </a>    
-                                <div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index">ABM Usuarios</a>
-                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Peliculas" asp-action="Index">ABM Peliculas</a>
-                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Salas" asp-action="Index">ABM Salas</a>
-                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Funcions" asp-action="Index">ABM Funciones</a>
+                        @if (usuarioActual != null)
+                        {
+                            <li class="nav-item">
+                                <div class="dropdown show">
+                                    <a class="dropdown-toggle nav-link text-light fs-4" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        ABM´s
+                                    </a>    
+                                    <div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index">ABM Usuarios</a>
+                                        <a class="dropdown-item text-dark" asp-area="" asp-controller="Peliculas" asp-action="Index">ABM Peliculas</a>
+                                        <a class="dropdown-item text-dark" asp-area="" asp-controller="Salas" asp-action="Index">ABM Salas</a>
+                                        <a class="dropdown-item text-dark" asp-area="" asp-controller="Funcions" asp-action="Index">ABM Funciones</a>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>        
-                        
+                            </li>
+                        }
 
                         <li class="nav-item btn btn-warning p-0 ml-1">
                             <a class="nav-link text-dark fs-5 fw-bold"  asp-area="" asp-controller="Cartelera" asp-action="Index">Ver Cartelera</a>
@@ -64,7 +65,7 @@
                         }else
                         {
                             <li class="nav-item ml-auto">
-                                <a class="text-light fs-4" asp-controller="MiUsuario" asp-action="Index"><img width="50px" height="50px" src="/img/usuario.png"/>MIS DATOS</a>
+                                <a class="text-light fs-5 m-1" asp-controller="MiUsuario" asp-action="Index"><img width="50px" height="50px" src="/img/usuario.png"/>  MIS DATOS</a>
                             </li>
                             <li class="nav-item text-light fs-4 ml-2">
                                 @Html.ActionLink("Cerrar Sesión", "CerrarSesion", "Cartelera", null, new { @class = "btn btn-warning"})

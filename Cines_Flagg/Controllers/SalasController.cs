@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Cines_Flagg.Models;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cines_Flagg.Controllers
 {
+    
     public class SalasController : Controller
     {
         private readonly MyContext _context;

@@ -68,7 +68,7 @@
                 </div>
                 <div class="row form-group">
                     <label asp-for="FechaNacimiento" class="control-label"></label>
-                    <input asp-for="FechaNacimiento" value=@Model.FechaNacimiento/>
+                        <input type="date" value="@Model.FechaNacimiento.ToString("yyyy-MM-dd")" />
                     <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
                 </div>
                 <div class="row form-group">

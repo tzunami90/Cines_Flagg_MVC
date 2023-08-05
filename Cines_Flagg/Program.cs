@@ -1,6 +1,12 @@
 using Cines_Flagg.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Cines_Flagg
 {
@@ -8,6 +14,7 @@ namespace Cines_Flagg
     {
         public static void Main(string[] args)
         {
+          
             var builder = WebApplication.CreateBuilder(args);
 
             //----
@@ -22,7 +29,7 @@ namespace Cines_Flagg
             builder.Services.AddSession(options =>
             {
                 // Set a short timeout for easy testing.
-                options.IdleTimeout = TimeSpan.FromSeconds(1000);
+                options.IdleTimeout = TimeSpan.FromSeconds(1000); //TIEMPO DE SESION (Punto extra)
                 options.Cookie.HttpOnly = true;
                 // Make the session cookie essential
                 options.Cookie.IsEssential = true;
@@ -57,5 +64,9 @@ namespace Cines_Flagg
 
             app.Run();
         }
+
+
+       
     }
+
 }

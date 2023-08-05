@@ -146,6 +146,8 @@ namespace Cines_Flagg.Controllers
                                 _context.SaveChanges();
 
                                 TempData["MensajeDevolver"] = "Se devolvio la totalidad de entradas";
+                                TempData["playDevol"] = true; // Almacena la bandera para reproducir el sonido
+
                                 HttpContext.Session.SetString("objetoUsuario", JsonConvert.SerializeObject(usuario));
                                 return RedirectToAction(nameof(MisFunciones));
                             }
@@ -161,6 +163,8 @@ namespace Cines_Flagg.Controllers
                                 _context.SaveChanges();
 
                                 TempData["MensajeDevolver"] = "Se devolvio la cantidad de entradas indicadas";
+                                TempData["playDevol"] = true; // Almacena la bandera para reproducir el sonido
+
                                 HttpContext.Session.SetString("objetoUsuario", JsonConvert.SerializeObject(usuario));
 
                                 return RedirectToAction(nameof(MisFunciones));

@@ -39,7 +39,8 @@
        </div>
     </div>
 
-        <div class="col-md-6 mt-4 offset-md-3">
+    <div class="row">
+        <div class="col-md-8 mt-4 mx-auto">
             <div class="card">
                 <div class="card-body"> 
                     
@@ -60,11 +61,11 @@
                             <td type="number" name="funcionID" id="funcionID" hidden>@funcion.ID</td>
                             <td>@funcion.MiSala.Ubicacion</td>
                             <td>@funcion.Fecha.Date.ToString("dd-MM-yyyy")</td>
-                            <td>@funcion.Costo</td>                            
+                            <td>$@funcion.Costo</td>                            
                             <td><form method="post"  asp-controller="Cartelera" asp-action="ComprarEntrada" >
                                 <input type="number" id="idFuncion" name="idFuncion" value="@funcion.ID" readonly hidden/>
                                 <input type="number" id="cant" name="cant" required/>
-                                <button type="submit"class="btn btn-danger">Comprar</button>
+                                <button type="submit" class="border-0 bg-white"><img type="submit" src="/img/compra.png" height="50px" width="50px" /></button>
                                 </form>
                             </td>     
                           </tr>
@@ -75,6 +76,7 @@
 
                 </div>
             </div>
+        </div>
         </div>
     </div>
 </div>

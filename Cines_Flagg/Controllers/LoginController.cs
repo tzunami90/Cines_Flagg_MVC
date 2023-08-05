@@ -4,6 +4,9 @@ using System.Web;
 //using System.Diagnostics;
 using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 
 namespace Cines_Flagg.Controllers
 {
@@ -24,7 +27,7 @@ namespace Cines_Flagg.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login([Bind("Mail,Password")] Usuario model)
+        public async Task<ActionResult> Login([Bind("Mail,Password")] Usuario model)
         {
             if (ModelState.IsValid)
             {
@@ -35,6 +38,7 @@ namespace Cines_Flagg.Controllers
                     //Debug.WriteLine(model.Nombre);  
                     // Aquí puedes guardar información del usuario en la sesión si es necesario
                     HttpContext.Session.SetString("logueado", "si");
+                    
                     // Redirigir al controlador y acción que representan la página de inicio después del inicio de sesión exitoso
 
                     int idUsuarioActual = _context.usuarios.Where(u => u.Mail == model.Mail ).FirstOrDefault().ID;
@@ -43,9 +47,11 @@ namespace Cines_Flagg.Controllers
 
                     Usuario objetoUsuario = _context.usuarios.Where( usuario => usuario.ID == idUsuarioActual).FirstOrDefault();
                     HttpContext.Session.SetString("objetoUsuario", JsonConvert.SerializeObject(objetoUsuario));
-
                  
                     TempData["PlayLoginSound"] = true; // Almacena la bandera para reproducir el sonido
+
+
+
 
                     //Redireccion
                     return RedirectToAction("Index", "Cartelera");

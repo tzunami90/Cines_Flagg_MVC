@@ -3,6 +3,26 @@
     ViewData["Title"] = "MisFunciones";
 }
 
+<!-- SONIDO DE DEVOLUCION -->
+<audio id="playDevol" src="~/sounds/devolucion.mp3"></audio>
+<!-- Script para reproducir el sonido -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/json2/20160511/json2.js"></script>
+<script>
+    function playSound(soundId) {
+        var sound = document.getElementById(soundId);
+        sound.play();
+    }
+
+    // Verificar si se debe reproducir el sonido después del inicio de sesión exitoso
+    $(document).ready(function () {
+        var playDevol = JSON.parse('@Html.Raw(Json.Serialize(TempData["playDevol"] ?? false))');
+        if (playDevol) {
+            playSound('playDevol');
+        }
+    });
+</script>
+
 <!DOCTYPE html>
 <html>
 <head>

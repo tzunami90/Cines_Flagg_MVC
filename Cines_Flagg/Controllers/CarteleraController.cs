@@ -95,7 +95,8 @@ namespace Cines_Flagg.Controllers
                 var funciones = _context.funciones
                       .Include(f => f.MiPelicula)
                       .Include(f => f.MiSala)
-                      .Where(f => f.MiPelicula.Nombre == nombrePelicula && f.Fecha.Date >= DateTime.Now.Date        )
+                      .Where(f => f.MiPelicula.Nombre == nombrePelicula && f.Fecha.Date >= DateTime.Now.Date)
+                      .OrderBy(f => f.Fecha)
                       .ToList();
 
                 ViewBag.Funciones = funciones;  
@@ -161,6 +162,8 @@ namespace Cines_Flagg.Controllers
                             _context.SaveChanges();
 
                             TempData["MensajeCompra"] = "Compra realizada con exito";
+                            TempData["playCompraSound"] = true; // Almacena la bandera para reproducir el sonido
+
                             HttpContext.Session.SetString("objetoUsuario", JsonConvert.SerializeObject(usuario));
 
                             return View("Index", _context.peliculas.ToList());
@@ -179,7 +182,10 @@ namespace Cines_Flagg.Controllers
                             _context.SaveChanges();
 
                             TempData["MensajeCompra"] = "Compra realizada con exito";
+                            TempData["playCompraSound"] = true; // Almacena la bandera para reproducir el sonido
+
                             HttpContext.Session.SetString("objetoUsuario", JsonConvert.SerializeObject(usuario));
+
                             return View("Index", _context.peliculas.ToList());
                         }
                     }
