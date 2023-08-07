@@ -1,5 +1,6 @@
 ﻿@{
     var usuarioActual =  Context.Session.GetInt32("idUsuarioActual");    
+    string esAdminValue = Context.Session.GetString("EsAdmin");
   }
 
 <!DOCTYPE html>
@@ -32,7 +33,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1 align-items-center">          
-                        @if (usuarioActual != null)
+                        @if (esAdminValue == "Y")
                         {
                             <li class="nav-item">
                                 <div class="dropdown show">

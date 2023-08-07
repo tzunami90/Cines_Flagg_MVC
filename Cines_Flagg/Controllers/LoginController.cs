@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace Cines_Flagg.Controllers
 {
@@ -45,13 +46,27 @@ namespace Cines_Flagg.Controllers
                     HttpContext.Session.SetInt32("idUsuarioActual", idUsuarioActual);
                     HttpContext.Session.SetString("logueado", "si");
 
+                    // Almacenar el estado de administrador en HttpContext.Session
+                    bool? esAdminNullable = _context.usuarios.Where(u => u.Mail == model.Mail).FirstOrDefault().EsAdmin; // Obtener el valor de EsAdmin
+                    if (esAdminNullable.HasValue)
+                    {
+                        bool esAdmin = esAdminNullable.Value;
+                        if (esAdmin)
+                        {
+                            // Si es admin, almacenar en la sesión
+                            HttpContext.Session.SetString("EsAdmin", "Y");
+                        }
+                        else
+                        {
+                            // No es admin, almacenar en la sesión 
+                            HttpContext.Session.SetString("EsAdmin", "N");
+                        }
+                    }
+
                     Usuario objetoUsuario = _context.usuarios.Where( usuario => usuario.ID == idUsuarioActual).FirstOrDefault();
                     HttpContext.Session.SetString("objetoUsuario", JsonConvert.SerializeObject(objetoUsuario));
                  
                     TempData["PlayLoginSound"] = true; // Almacena la bandera para reproducir el sonido
-
-
-
 
                     //Redireccion
                     return RedirectToAction("Index", "Cartelera");
@@ -65,6 +80,8 @@ namespace Cines_Flagg.Controllers
             }
             return View(model);
         }
+
+
 
         // Método para validar las credenciales del usuario en la base de datos
         private bool ValidateUser(string mail, string password)

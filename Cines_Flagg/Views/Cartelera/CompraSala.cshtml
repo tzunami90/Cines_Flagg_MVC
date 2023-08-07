@@ -65,7 +65,7 @@
                                 <td><details><summary>Ver</summary><p>@funcion.MiPelicula.Sinopsis</p></details></td>
                                 <td>@funcion.MiPelicula.Duracion</td>
                                 <td>@funcion.Fecha.Date.ToString("dd-MM-yyyy")</td>
-                                <td>@funcion.Costo</td>                            
+                                <td>$@funcion.Costo</td>                            
                                 <td><form method="post" id="comprar" asp-controller="Cartelera" asp-action="ComprarEntrada" >
                                     <input type="number" id="idFuncion" name="idFuncion" value="@funcion.ID" readonly hidden/>
                                     <input type="number" id="cant" name="cant" required/>

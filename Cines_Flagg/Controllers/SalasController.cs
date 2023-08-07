@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Cines_Flagg.Controllers
 {
-    
     public class SalasController : Controller
     {
         private readonly MyContext _context;
@@ -24,33 +23,66 @@ namespace Cines_Flagg.Controllers
         // GET: Salas
         public async Task<IActionResult> Index()
         {
-              return _context.salas != null ? 
-                          View(await _context.salas.ToListAsync()) :
-                          Problem("Entity set 'MyContext.salas'  is null.");
+            string esAdminValue = HttpContext.Session.GetString("EsAdmin");
+
+            if (esAdminValue == "Y")
+            {
+                // Si es administrador, permitir el acceso a la acción
+                return _context.salas != null ?
+                         View(await _context.salas.ToListAsync()) :
+                         Problem("Entity set 'MyContext.salas'  is null.");
+            }
+            else
+            {
+                // Si no es administrador, redirigir a AccessDenied
+                return RedirectToAction("AccessDenied", "Home");
+            }
+           
         }
 
         // GET: Salas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.salas == null)
-            {
-                return NotFound();
-            }
+            string esAdminValue = HttpContext.Session.GetString("EsAdmin");
 
-            var sala = await _context.salas
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (sala == null)
+            if (esAdminValue == "Y")
             {
-                return NotFound();
-            }
+                if (id == null || _context.salas == null)
+                {
+                    return NotFound();
+                }
 
-            return View(sala);
+                var sala = await _context.salas
+                    .FirstOrDefaultAsync(m => m.ID == id);
+                if (sala == null)
+                {
+                    return NotFound();
+                }
+
+                return View(sala);
+            }
+            else
+            {
+                // Si no es administrador, redirigir a AccessDenied
+                return RedirectToAction("AccessDenied", "Home");
+            }
+            
         }
 
         // GET: Salas/Create
         public IActionResult Create()
         {
-            return View();
+            string esAdminValue = HttpContext.Session.GetString("EsAdmin");
+
+            if (esAdminValue == "Y")
+            {
+                return View();
+            }
+            else
+            {
+                // Si no es administrador, redirigir a AccessDenied
+                return RedirectToAction("AccessDenied", "Home");
+            }            
         }
 
         // POST: Salas/Create
@@ -66,23 +98,34 @@ namespace Cines_Flagg.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(sala);
+            return View(sala);         
         }
 
         // GET: Salas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.salas == null)
-            {
-                return NotFound();
-            }
+            string esAdminValue = HttpContext.Session.GetString("EsAdmin");
 
-            var sala = await _context.salas.FindAsync(id);
-            if (sala == null)
+            if (esAdminValue == "Y")
             {
-                return NotFound();
+                if (id == null || _context.salas == null)
+                {
+                    return NotFound();
+                }
+
+                var sala = await _context.salas.FindAsync(id);
+                if (sala == null)
+                {
+                    return NotFound();
+                }
+                return View(sala);
             }
-            return View(sala);
+            else
+            {
+                // Si no es administrador, redirigir a AccessDenied
+                return RedirectToAction("AccessDenied", "Home");
+            }
+            
         }
 
         // POST: Salas/Edit/5
@@ -123,19 +166,30 @@ namespace Cines_Flagg.Controllers
         // GET: Salas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.salas == null)
-            {
-                return NotFound();
-            }
+            string esAdminValue = HttpContext.Session.GetString("EsAdmin");
 
-            var sala = await _context.salas
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (sala == null)
+            if (esAdminValue == "Y")
             {
-                return NotFound();
-            }
+                if (id == null || _context.salas == null)
+                {
+                    return NotFound();
+                }
 
-            return View(sala);
+                var sala = await _context.salas
+                    .FirstOrDefaultAsync(m => m.ID == id);
+                if (sala == null)
+                {
+                    return NotFound();
+                }
+
+                return View(sala);
+            }
+            else
+            {
+                // Si no es administrador, redirigir a AccessDenied
+                return RedirectToAction("AccessDenied", "Home");
+            }
+            
         }
 
         // POST: Salas/Delete/5

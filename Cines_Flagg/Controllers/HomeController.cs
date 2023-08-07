@@ -16,7 +16,7 @@ namespace Cines_Flagg.Controllers
             _logger = logger;
             _context = context;
         }
-     //   [Authorize]
+  
         public IActionResult Index()
         {
             Usuario usuario = _context.usuarios.Where(usuario => usuario.ID == 3).FirstOrDefault();
@@ -24,6 +24,11 @@ namespace Cines_Flagg.Controllers
            // ViewData["usuario"] = usuario;
             ViewBag.usuario = usuario;
             return View(usuario);
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return View(); // Devuelve la vista personalizada de acceso denegado
         }
 
         public IActionResult Privacy()

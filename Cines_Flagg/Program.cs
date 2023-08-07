@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Identity;
+using System.Configuration;
 
 namespace Cines_Flagg
 {
@@ -38,6 +40,12 @@ namespace Cines_Flagg
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Login/Index"; // Cambia la ruta al controlador y acción que deseas usar
+                options.AccessDeniedPath = "/Shared/AccessDenied"; // Opcional: configurar la página de acceso denegado
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -52,12 +60,10 @@ namespace Cines_Flagg
             app.UseStaticFiles();
 
             app.UseSession();
-
+          
             app.UseRouting();
-
             app.UseAuthorization();
             app.UseAuthentication();
-
             app.MapControllerRoute( //Ruta por defecto el index del HOME. Si queremos podemos poner por defecto otro (ej login)
                 name: "default",
                 pattern: "{controller=Cartelera}/{action=Index}/{id?}");
@@ -65,8 +71,15 @@ namespace Cines_Flagg
             app.Run();
         }
 
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+           Host.CreateDefaultBuilder(args)
+               .ConfigureWebHostDefaults(webBuilder =>
+               {
+                   webBuilder.UseStartup<Program>();
+               });
 
-       
+
+
     }
 
 }

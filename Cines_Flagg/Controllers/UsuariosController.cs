@@ -22,33 +22,69 @@ namespace Cines_Flagg.Controllers
         // GET: Usuarios
         public async Task<IActionResult> Index()
         {
-              return _context.usuarios != null ? 
+            string esAdminValue = HttpContext.Session.GetString("EsAdmin");
+
+            if (esAdminValue == "Y")
+            {
+                // Si es administrador, permitir el acceso a la acción
+                return _context.usuarios != null ?
                           View(await _context.usuarios.ToListAsync()) :
                           Problem("Entity set 'MyContext.usuarios'  is null.");
+            }
+            else
+            {
+                // Si no es administrador, redirigir a AccessDenied
+                return RedirectToAction("AccessDenied", "Home");
+            }
+
         }
 
         // GET: Usuarios/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.usuarios == null)
+
+            string esAdminValue = HttpContext.Session.GetString("EsAdmin");
+
+            if (esAdminValue == "Y")
             {
-                return NotFound();
+                if (id == null || _context.usuarios == null)
+                {
+                    return NotFound();
+                }
+
+                var usuario = await _context.usuarios
+                    .FirstOrDefaultAsync(m => m.ID == id);
+                if (usuario == null)
+                {
+                    return NotFound();
+                }
+
+                return View(usuario);
+            }
+            else
+            {
+                // Si no es administrador, redirigir a AccessDenied
+                return RedirectToAction("AccessDenied", "Home");
             }
 
-            var usuario = await _context.usuarios
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (usuario == null)
-            {
-                return NotFound();
-            }
-
-            return View(usuario);
         }
 
         // GET: Usuarios/Create
         public IActionResult Create()
         {
-            return View();
+            string esAdminValue = HttpContext.Session.GetString("EsAdmin");
+
+            if (esAdminValue == "Y")
+            {
+
+                return View();
+                
+            }
+            else
+            {
+                // Si no es administrador, redirigir a AccessDenied
+                return RedirectToAction("AccessDenied", "Home");
+            }
         }
 
         // POST: Usuarios/Create
@@ -58,24 +94,24 @@ namespace Cines_Flagg.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Nombre,Apellido,DNI,Mail,Password,IntentosFallidos,Bloqueado,Credito,FechaNacimiento,EsAdmin")] Usuario usuario)
         {
-            if (ModelState.IsValid)
-            {
-                bool isValidUser = ValidateUser(usuario.Mail, usuario.DNI);
+                if (ModelState.IsValid)
+                {
+                    bool isValidUser = ValidateUser(usuario.Mail, usuario.DNI);
 
-                if (isValidUser) //El usuario no existe entonces lo creo
-                {
-                    _context.Add(usuario);
-                    await _context.SaveChangesAsync();
-                    ViewBag.SuccessMessage = "Registro Exitoso";
-                    return RedirectToAction(nameof(Index));
+                    if (isValidUser) //El usuario no existe entonces lo creo
+                    {
+                        _context.Add(usuario);
+                        await _context.SaveChangesAsync();
+                        ViewBag.SuccessMessage = "Registro Exitoso";
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else //El usuario ya existe con el mail o dni ingresados
+                    {
+                        ModelState.AddModelError("Usuario", "Ya existe un usuario con este Mail");
+                        return RedirectToAction("Index", "Register");
+                    }
                 }
-                else //El usuario ya existe con el mail o dni ingresados
-                {
-                    ModelState.AddModelError("Usuario", "Ya existe un usuario con este Mail");
-                    return RedirectToAction("Index", "Register");
-                }
-            }
-            return View(usuario);
+                return View(usuario);
         }
         //VALIDADOR MAIL O DNI EXISTENTE
         private bool ValidateUser(string Mail, int DNI)
@@ -103,17 +139,27 @@ namespace Cines_Flagg.Controllers
         // GET: Usuarios/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.usuarios == null)
-            {
-                return NotFound();
-            }
+            string esAdminValue = HttpContext.Session.GetString("EsAdmin");
 
-            var usuario = await _context.usuarios.FindAsync(id);
-            if (usuario == null)
+            if (esAdminValue == "Y")
             {
-                return NotFound();
+                if (id == null || _context.usuarios == null)
+                {
+                    return NotFound();
+                }
+
+                var usuario = await _context.usuarios.FindAsync(id);
+                if (usuario == null)
+                {
+                    return NotFound();
+                }
+                return View(usuario);
             }
-            return View(usuario);
+            else
+            {
+                // Si no es administrador, redirigir a AccessDenied
+                return RedirectToAction("AccessDenied", "Home");
+            }
         }
 
         // POST: Usuarios/Edit/5
@@ -154,19 +200,29 @@ namespace Cines_Flagg.Controllers
         // GET: Usuarios/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.usuarios == null)
-            {
-                return NotFound();
-            }
+            string esAdminValue = HttpContext.Session.GetString("EsAdmin");
 
-            var usuario = await _context.usuarios
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (usuario == null)
+            if (esAdminValue == "Y")
             {
-                return NotFound();
-            }
+                if (id == null || _context.usuarios == null)
+                {
+                    return NotFound();
+                }
 
-            return View(usuario);
+                var usuario = await _context.usuarios
+                    .FirstOrDefaultAsync(m => m.ID == id);
+                if (usuario == null)
+                {
+                    return NotFound();
+                }
+
+                return View(usuario);
+            }
+            else
+            {
+                // Si no es administrador, redirigir a AccessDenied
+                return RedirectToAction("AccessDenied", "Home");
+            }
         }
 
         // POST: Usuarios/Delete/5

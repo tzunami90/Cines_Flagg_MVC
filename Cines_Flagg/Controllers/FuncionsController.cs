@@ -21,38 +21,65 @@ namespace Cines_Flagg.Controllers
         // GET: Funcions
         public async Task<IActionResult> Index()
         {
-            var myContext = _context.funciones.Include(f => f.MiPelicula).Include(f => f.MiSala);
-            return View(await myContext.ToListAsync());
+            string esAdminValue = HttpContext.Session.GetString("EsAdmin");
+
+            if (esAdminValue == "Y")
+            {
+                var myContext = _context.funciones.Include(f => f.MiPelicula).Include(f => f.MiSala);
+                return View(await myContext.ToListAsync());
+            }
+            else
+            {
+                // Si no es administrador, redirigir a AccessDenied
+                return RedirectToAction("AccessDenied", "Home");
+            }
         }
 
         // GET: Funcions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.funciones == null)
+            string esAdminValue = HttpContext.Session.GetString("EsAdmin");
+            if (esAdminValue == "Y")
             {
-                return NotFound();
-            }
+                    if (id == null || _context.funciones == null)
+                {
+                    return NotFound();
+                }
 
-            var funcion = await _context.funciones
-                .Include(f => f.MiPelicula)
-                .Include(f => f.MiSala)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (funcion == null)
+                var funcion = await _context.funciones
+                    .Include(f => f.MiPelicula)
+                    .Include(f => f.MiSala)
+                    .FirstOrDefaultAsync(m => m.ID == id);
+                if (funcion == null)
+                {
+                    return NotFound();
+                }
+
+                return View(funcion);
+            }
+            else
             {
-                return NotFound();
+                // Si no es administrador, redirigir a AccessDenied
+                return RedirectToAction("AccessDenied", "Home");
             }
-
-            return View(funcion);
         }
 
         // GET: Funcions/Create
         public IActionResult Create()
         {
-          //Si cambias "ID" por "Nombre" te muestra los nombres de las peliculas ;)
-
-            ViewData["idPelicula"] = new SelectList(_context.peliculas, "ID", "ID");
-            ViewData["idSala"] = new SelectList(_context.salas, "ID", "ID");
-            return View();
+            string esAdminValue = HttpContext.Session.GetString("EsAdmin");
+            if (esAdminValue == "Y")
+            {
+                //Si cambias "ID" por "Nombre" te muestra los nombres de las peliculas ;)
+                ViewData["idPelicula"] = new SelectList(_context.peliculas, "ID", "ID");
+                ViewData["idSala"] = new SelectList(_context.salas, "ID", "ID");
+                return View();
+            }
+            else
+            {
+                // Si no es administrador, redirigir a AccessDenied
+                return RedirectToAction("AccessDenied", "Home");
+            }
         }
 
         // POST: Funcions/Create
@@ -86,19 +113,28 @@ namespace Cines_Flagg.Controllers
         // GET: Funcions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.funciones == null)
+            string esAdminValue = HttpContext.Session.GetString("EsAdmin");
+            if (esAdminValue == "Y")
             {
-                return NotFound();
-            }
+                if (id == null || _context.funciones == null)
+                {
+                    return NotFound();
+                }
 
-            var funcion = await _context.funciones.FindAsync(id);
-            if (funcion == null)
-            {
-                return NotFound();
+                var funcion = await _context.funciones.FindAsync(id);
+                if (funcion == null)
+                {
+                    return NotFound();
+                }
+                ViewData["idPelicula"] = new SelectList(_context.peliculas, "ID", "ID", funcion.idPelicula);
+                ViewData["idSala"] = new SelectList(_context.salas, "ID", "ID", funcion.idSala);
+                return View(funcion);
             }
-            ViewData["idPelicula"] = new SelectList(_context.peliculas, "ID", "ID", funcion.idPelicula);
-            ViewData["idSala"] = new SelectList(_context.salas, "ID", "ID", funcion.idSala);
-            return View(funcion);
+            else
+            {
+                // Si no es administrador, redirigir a AccessDenied
+                return RedirectToAction("AccessDenied", "Home");
+            }
         }
 
         // POST: Funcions/Edit/5
@@ -144,21 +180,30 @@ namespace Cines_Flagg.Controllers
         // GET: Funcions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.funciones == null)
+            string esAdminValue = HttpContext.Session.GetString("EsAdmin");
+            if (esAdminValue == "Y")
             {
-                return NotFound();
-            }
+                if (id == null || _context.funciones == null)
+                {
+                    return NotFound();
+                }
 
-            var funcion = await _context.funciones
-                .Include(f => f.MiPelicula)
-                .Include(f => f.MiSala)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (funcion == null)
+                var funcion = await _context.funciones
+                    .Include(f => f.MiPelicula)
+                    .Include(f => f.MiSala)
+                    .FirstOrDefaultAsync(m => m.ID == id);
+                if (funcion == null)
+                {
+                    return NotFound();
+                }
+
+                return View(funcion);
+            }
+            else
             {
-                return NotFound();
+                // Si no es administrador, redirigir a AccessDenied
+                return RedirectToAction("AccessDenied", "Home");
             }
-
-            return View(funcion);
         }
 
         // POST: Funcions/Delete/5

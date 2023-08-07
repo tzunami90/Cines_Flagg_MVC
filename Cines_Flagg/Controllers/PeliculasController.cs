@@ -21,33 +21,66 @@ namespace Cines_Flagg.Controllers
         // GET: Peliculas
         public async Task<IActionResult> Index()
         {
-              return _context.peliculas != null ? 
+            string esAdminValue = HttpContext.Session.GetString("EsAdmin");
+
+            if (esAdminValue == "Y")
+            {
+               return _context.peliculas != null ? 
                           View(await _context.peliculas.ToListAsync()) :
                           Problem("Entity set 'MyContext.peliculas'  is null.");
+            }
+            else
+            {
+                // Si no es administrador, redirigir a AccessDenied
+                return RedirectToAction("AccessDenied", "Home");
+            }
+            
         }
 
         // GET: Peliculas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.peliculas == null)
-            {
-                return NotFound();
-            }
+            string esAdminValue = HttpContext.Session.GetString("EsAdmin");
 
-            var pelicula = await _context.peliculas
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (pelicula == null)
+            if (esAdminValue == "Y")
             {
-                return NotFound();
-            }
+                if (id == null || _context.peliculas == null)
+                {
+                    return NotFound();
+                }
 
-            return View(pelicula);
+                var pelicula = await _context.peliculas
+                    .FirstOrDefaultAsync(m => m.ID == id);
+                if (pelicula == null)
+                {
+                    return NotFound();
+                }
+
+                return View(pelicula);
+            }
+            else
+            {
+                // Si no es administrador, redirigir a AccessDenied
+                return RedirectToAction("AccessDenied", "Home");
+            }
+            
         }
 
         // GET: Peliculas/Create
         public IActionResult Create()
         {
-            return View();
+            string esAdminValue = HttpContext.Session.GetString("EsAdmin");
+
+            if (esAdminValue == "Y")
+            {
+                // Si es administrador, permitir el acceso a la acción
+                return View();
+            }
+            else
+            {
+                // Si no es administrador, redirigir a AccessDenied
+                return RedirectToAction("AccessDenied", "Home");
+            }
         }
 
         // POST: Peliculas/Create
@@ -69,17 +102,27 @@ namespace Cines_Flagg.Controllers
         // GET: Peliculas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.peliculas == null)
-            {
-                return NotFound();
-            }
+            string esAdminValue = HttpContext.Session.GetString("EsAdmin");
 
-            var pelicula = await _context.peliculas.FindAsync(id);
-            if (pelicula == null)
+            if (esAdminValue == "Y")
             {
-                return NotFound();
+                if (id == null || _context.peliculas == null)
+                {
+                    return NotFound();
+                }
+
+                var pelicula = await _context.peliculas.FindAsync(id);
+                if (pelicula == null)
+                {
+                    return NotFound();
+                }
+                return View(pelicula);
             }
-            return View(pelicula);
+            else
+            {
+                // Si no es administrador, redirigir a AccessDenied
+                return RedirectToAction("AccessDenied", "Home");
+            }
         }
 
         // POST: Peliculas/Edit/5
@@ -120,19 +163,30 @@ namespace Cines_Flagg.Controllers
         // GET: Peliculas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.peliculas == null)
-            {
-                return NotFound();
-            }
 
-            var pelicula = await _context.peliculas
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (pelicula == null)
-            {
-                return NotFound();
-            }
+            string esAdminValue = HttpContext.Session.GetString("EsAdmin");
 
-            return View(pelicula);
+            if (esAdminValue == "Y")
+            {
+                if (id == null || _context.peliculas == null)
+                {
+                    return NotFound();
+                }
+
+                var pelicula = await _context.peliculas
+                    .FirstOrDefaultAsync(m => m.ID == id);
+                if (pelicula == null)
+                {
+                    return NotFound();
+                }
+
+                return View(pelicula);
+            }
+            else
+            {
+                // Si no es administrador, redirigir a AccessDenied
+                return RedirectToAction("AccessDenied", "Home");
+            }
         }
 
         // POST: Peliculas/Delete/5
