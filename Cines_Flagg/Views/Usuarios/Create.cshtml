@@ -56,11 +56,18 @@
                 <input asp-for="IntentosFallidos" class="form-control" />
                 <span asp-validation-for="IntentosFallidos" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
+@*            <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Bloqueado" /> @Html.DisplayNameFor(model => model.Bloqueado)
                 </label>
-            </div>
+            </div>*@
+                    <div class="form-group">
+                        <label class="form-check-label">Esta Bloqueado?</label>
+                        <select asp-for="Bloqueado" class="form-control" id="Bloqueado">
+                            <option value="true">Si</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
             <div class="form-group">
                 <label asp-for="Credito" class="control-label"></label>
                 <input asp-for="Credito" class="form-control" />
@@ -71,11 +78,18 @@
                 <input asp-for="FechaNacimiento" class="form-control" />
                 <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
+            @*<div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="EsAdmin" /> @Html.DisplayNameFor(model => model.EsAdmin)
                 </label>
-            </div>
+            </div>*@
+                    <div class="form-group">
+                        <label class="form-check-label">Es Administrador?</label>
+                        <select asp-for="EsAdmin" class="form-control" id="EsAdmin">
+                            <option value="true">Si</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
             <div class="form-group">
                 <input type="submit" value="Crear" class="btn btn-primary" />
             </div>

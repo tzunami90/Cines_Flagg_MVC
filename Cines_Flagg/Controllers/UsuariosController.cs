@@ -7,12 +7,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Cines_Flagg.Models;
 using System.Diagnostics;
+using Newtonsoft.Json;
 
 namespace Cines_Flagg.Controllers
 {
     public class UsuariosController : Controller
     {
         private readonly MyContext _context;
+        private Usuario usuarioActual;
 
         public UsuariosController(MyContext context)
         {
@@ -92,15 +94,20 @@ namespace Cines_Flagg.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Nombre,Apellido,DNI,Mail,Password,IntentosFallidos,Bloqueado,Credito,FechaNacimiento,EsAdmin")] Usuario usuario)
+        public async Task<IActionResult> Create(int id, [Bind("ID,Nombre,Apellido,DNI,Mail,Password,Bloqueado,IntentosFallidos,Credito,FechaNacimiento,EsAdmin")] Usuario usuario)
         {
-                if (ModelState.IsValid)
+            if (id != usuario.ID)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
                 {
                     bool isValidUser = ValidateUser(usuario.Mail, usuario.DNI);
 
                     if (isValidUser) //El usuario no existe entonces lo creo
                     {
-                        _context.Add(usuario);
+                    _context.Add(usuario);
                         await _context.SaveChangesAsync();
                         ViewBag.SuccessMessage = "Registro Exitoso";
                         return RedirectToAction(nameof(Index));
@@ -167,14 +174,14 @@ namespace Cines_Flagg.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Nombre,Apellido,DNI,Mail,Password,IntentosFallidos,Bloqueado,Credito,FechaNacimiento,EsAdmin")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id,[Bind("ID,Nombre,Apellido,DNI,Mail,Password,Bloqueado,IntentosFallidos,Credito,FechaNacimiento,EsAdmin")] Usuario usuario)
         {
             if (id != usuario.ID)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+                if (ModelState.IsValid)
             {
                 try
                 {

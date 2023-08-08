@@ -68,7 +68,7 @@
                 </div>
                 <div class="row form-group">
                     <label asp-for="FechaNacimiento" class="control-label"></label>
-                    <input asp-for="FechaNacimiento" type="date" value="@Model.FechaNacimiento.ToString("yyyy-MM-dd")"/>
+                    <input asp-for="FechaNacimiento" type="date" value=@Model.FechaNacimiento.ToString("yyyy-MM-dd")/>
                     <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
                 </div>
                 <div class="row form-group">
@@ -81,8 +81,7 @@
                         <button type="submit" asp-controller="MiUsuario" asp-action="Edit" form="form_datos_usuario" class="btn btn-primary">Modificar</button>
                     </div>
                 </div>
-
-            </form>
+                </form>
         </div>
 
         <div class="col-4 border border-2 p-5 rounded-3 ms-5">

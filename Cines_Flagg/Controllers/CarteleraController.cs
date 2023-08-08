@@ -230,6 +230,7 @@ namespace Cines_Flagg.Controllers
                       .Include(f => f.MiPelicula)
                       .Include(f => f.MiSala)
                       .Where(f => f.MiSala.Ubicacion == nombreUbicacion && f.Fecha.Date >= DateTime.Now.Date)
+                      .OrderBy(f => f.Fecha)
                       .ToList();
 
                 ViewBag.Funciones = funciones;

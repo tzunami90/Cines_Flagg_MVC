@@ -15,25 +15,29 @@
 
 <div class="text-center">
 
-
     <h1 class="display-4">ACCESO DENEGADO</h1>
 
-
     <p>Usted no tiene acceso a esta URL</p>
-    <p>Redirigiendo en <span id="coutdown">5</span> segundos...</p>
+    
+    <p>Redirigiendo en <span id="countdown">5</span> segundos...</p>
 
     <script>
+
+        var countdownElement = document.getElementById("countdown");
         var seconds = 5;
-        function coutdown(){
-            $('#countdown').text(seconds);
-            if(seconds == 0){
-                window.location.href = '@Url.Action("OtraVista","Counter")'            
+
+        function updateCountdown() {
+            countdownElement.textContent = seconds;
+            seconds--;
+
+            if (seconds < 0) {
+                window.location.href = '/Cartelera/Index'; 
             } else {
-                seconds--;
-                setTimeout(countdown,1000);
-            }        
+                setTimeout(updateCountdown, 1000); 
+            }
         }
-        countdown();
+
+        updateCountdown();
     </script>
 </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

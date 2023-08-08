@@ -73,7 +73,6 @@ namespace Cines_Flagg.Controllers
                 }
                 else
                 {
-                    TempData["MensajeErrorLogin"] = "Credenciales inválidas. Inténtalo de nuevo.";
                     TempData["PlayErrorSound"] = true; // Almacena la bandera para reproducir el sonido
                     return RedirectToAction("Index", "Login");
                 }
@@ -95,27 +94,30 @@ namespace Cines_Flagg.Controllers
                 Usuario usr = _context.usuarios.Where(u => u.Mail == mail && u.Bloqueado == false).FirstOrDefault();
                 if (usr != null)
                 {
-                    if (usr.Password == password)
+                    if (usr.Password == password && usr.Bloqueado == false)
                     {
                         UsuarioActual = usr;
                         comprobar = "ok";
                         usr.IntentosFallidos = 0;
                         _context.usuarios.Update(usr);//Actualiza los intentos fallidos a 0
                         _context.SaveChanges();
+                       
                     }
                     else
                     {
                         usr.IntentosFallidos++;
-                        if (usr.IntentosFallidos == 4)
+                        if (usr.IntentosFallidos == 4 || usr.Bloqueado == true)
                         {
-                            usr.Bloqueado = true;
+                            usr.Bloqueado = true;                            
                         }
                         _context.usuarios.Update(usr);
                         _context.SaveChanges();
+                        TempData["MensajeErrorLogin"] = "Credenciales inválidas. Inténtalo de nuevo.";
                     }
                 }
                 else
                 {
+                    TempData["MensajeBloqueado"] = "El usuario se enuentra bloqueado. Pongase en contacto con un Admin";
                     return false;
                 }
                 if (comprobar == "ok") 

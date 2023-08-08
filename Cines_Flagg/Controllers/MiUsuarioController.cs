@@ -81,7 +81,7 @@ namespace Cines_Flagg.Controllers
                     usuario.Bloqueado =usuarioActual.Bloqueado;
                     usuario.Credito = usuarioActual.Credito;
                     usuario.IntentosFallidos = usuarioActual.IntentosFallidos;
-                    usuario.FechaNacimiento = usuarioActual.FechaNacimiento;
+                    //usuario.FechaNacimiento = usuarioActual.FechaNacimiento;
 
                     _context.Update(usuario);
                     await _context.SaveChangesAsync();

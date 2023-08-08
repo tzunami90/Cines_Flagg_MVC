@@ -52,6 +52,12 @@
                         @TempData["MensajeErrorLogin"]
                     </div>
                 }
+                @if (TempData["MensajeBloqueado"] != null)
+                {
+                    <div class="alert alert-danger">
+                        @TempData["MensajeBloqueado"]
+                    </div>
+                }
                 @using (Html.BeginForm("Login", "Login", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
