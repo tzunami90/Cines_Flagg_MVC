@@ -18,6 +18,28 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <!--Icono de la pesataña-->
         <link rel="shortcut icon" href="/img/icf.png"> 
+
+        @*Contador para redirigir en caso de inactividad*@
+        <script>
+            var idleTimeout = @((int)TimeSpan.FromSeconds(1000).TotalMilliseconds); // Tiempo de expiración en milisegundos
+            var logoutUrl = '@Url.Action("CerrarSesion", "Cartelera")'; // Ruta al método de logout
+
+            function setupIdleTimeout() {
+                var timeout = setTimeout(function () {
+                    window.location.href = logoutUrl;
+                }, idleTimeout);
+
+                document.addEventListener("mousemove", function () {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(function () {
+                        window.location.href = logoutUrl;
+                    }, idleTimeout);
+                });
+            }
+            setupIdleTimeout();
+        </script>
+
+
     </head>
 
 </head>
@@ -69,7 +91,9 @@
                                 <a class="text-light fs-5 m-1" asp-controller="MiUsuario" asp-action="Index"><img width="50px" height="50px" src="/img/usuario.png"/>  MIS DATOS</a>
                             </li>
                             <li class="nav-item text-light fs-4 ml-2">
-                                @Html.ActionLink("Cerrar Sesión", "CerrarSesion", "Cartelera", null, new { @class = "btn btn-warning"})
+                                <a href="@Url.Action("CerrarSesion", "Cartelera")" class="btn btn-warning">
+                                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                                </a>
                             </li>
                         }                           
                     </ul>

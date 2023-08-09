@@ -1,7 +1,7 @@
 ﻿
 @model List<Sala>
 @{
-    ViewData["Title"] = "Cartelera";
+    ViewData["Title"] = "Salas";
 }
 <!-- Agregar referencias a los archivos de sonido -->
 <audio id="loginSound" src="~/sounds/Loginw.mp3"></audio>
@@ -90,12 +90,16 @@
     </style>
 
 
-    <title>Cartelera</title>
+    <title>Cartelera por Sala</title>
 </head>
 <body>
     <div class="container">
         <div class="container d-flex justify-content-center align-items-center" style="height: 10vh;">
-            <h2>Salas Cine Flagg</h2>            
+            <div class="container d-flex justify-content-center align-items-center" style="height: 10vh;">
+                <h2 class="text-center text-primary mt-4 fw-bold text-enorme">
+                    <i class="fas fa-film icono-enorme"></i> Salas <span class="text-warning">Cines Flagg <i class="fas fa-film icono-enorme"></i></span>
+                </h2>
+            </div>
         </div>
         @if (TempData["MensajeCompra"] != null)
             {
@@ -125,7 +129,7 @@
 
                             </div>
                         </a>
-                        <p>@sala.Ubicacion</p>
+                        <p class="fw-bold">@sala.Ubicacion</p>
                     </div>
                 </div>
 

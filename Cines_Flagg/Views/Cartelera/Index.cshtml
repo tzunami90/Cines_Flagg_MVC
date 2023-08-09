@@ -112,7 +112,9 @@
 <body>
     <div class="container">
         <div class="container d-flex justify-content-center align-items-center" style="height: 10vh;">
-            <h2>Cartelera Cine Flagg</h2>            
+            <h2 class="text-center text-primary mt-4 fw-bold text-enorme">
+                <i class="fas fa-film icono-enorme"></i> Cartelera <span class="text-warning">Cines Flagg <i class="fas fa-film icono-enorme"></i></span>
+            </h2>
         </div>
         @if (TempData["MensajeCompra"] != null)
             {
@@ -174,7 +176,7 @@
 
                             </div>
                         </a>
-                        <p>@pelicula.Nombre</p>
+                        <p class="fw-bold">@pelicula.Nombre</p>
                     </div>
                 </div>
 

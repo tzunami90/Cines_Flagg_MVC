@@ -106,7 +106,7 @@ namespace Cines_Flagg.Controllers
                     else
                     {
                         usr.IntentosFallidos++;
-                        if (usr.IntentosFallidos == 4 || usr.Bloqueado == true)
+                        if (usr.IntentosFallidos == 3 || usr.Bloqueado == true)
                         {
                             usr.Bloqueado = true;                            
                         }

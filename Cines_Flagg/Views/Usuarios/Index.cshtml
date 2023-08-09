@@ -23,84 +23,89 @@
 <p>
     <a asp-action="Create">Crear Nuevo Usuario</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Apellido)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DNI)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Mail)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Password)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IntentosFallidos)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Bloqueado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Credito)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaNacimiento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EsAdmin)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Apellido)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DNI)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Mail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Password)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IntentosFallidos)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Bloqueado)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Credito)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaNacimiento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EsAdmin)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Detalles</a> |
-                <a class="text-danger" asp-action="Delete" asp-route-id="@item.ID">Eliminar</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<div>
+    <table class="table bg-light border">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Apellido)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DNI)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Mail)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Password)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IntentosFallidos)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Bloqueado)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Credito)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FechaNacimiento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EsAdmin)
+                </th>
+                        <th>Editar|Ver|Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Apellido)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DNI)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mail)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Password)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IntentosFallidos)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Bloqueado)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Credito)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaNacimiento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EsAdmin)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID">
+                                    <img src="/img/editar.png" alt="Editar" width="40px" height="40px"/>
+                                </a> 
+                                <a asp-action="Details" asp-route-id="@item.ID"><img src="/img/ver.png" alt="Detalles" width="40px" height="40px" /></a> 
+                                <a class="text-danger" asp-action="Delete" asp-route-id="@item.ID"> <img src="/img/eliminar.png" alt="Eliminar" width="40px" height="40px" /></a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+</div>
 </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>

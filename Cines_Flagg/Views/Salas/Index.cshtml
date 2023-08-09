@@ -23,6 +23,7 @@
 <p>
     <a asp-action="Create">Crear nueva Sala</a>
 </p>
+<div class="card">
 <table class="table">
     <thead>
         <tr>
@@ -32,7 +33,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Capacidad)
             </th>
-            <th></th>
+            <th>Editar|Ver|Eliminar</th>
         </tr>
     </thead>
     <tbody>
@@ -44,15 +45,18 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Capacidad)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Detalles</a> |
-                <a class="text-danger" asp-action="Delete" asp-route-id="@item.ID">Eliminar</a>
-            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.ID">
+                                    <img src="/img/editar.png" alt="Editar" width="40px" height="40px" />
+                                </a>
+                                <a asp-action="Details" asp-route-id="@item.ID"><img src="/img/ver.png" alt="Detalles" width="40px" height="40px" /></a>
+                                <a class="text-danger" asp-action="Delete" asp-route-id="@item.ID"> <img src="/img/eliminar.png" alt="Eliminar" width="40px" height="40px" /></a>
+                            </td>
         </tr>
 }
     </tbody>
 </table>
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>

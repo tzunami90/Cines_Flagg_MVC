@@ -38,12 +38,12 @@
 </head>
 <body>
  
-<h1>Mi Usuario</h1>
+<h1 class="text-center mb-4">Mi Usuario</h1>
 
 <div class="container">
     <div class="row d-flex justify-content-center">
-        <div class="col-4 border border-2 p-5 rounded-3 me-5">
-            
+            <div class="col-4 card border border-2 border-primary p-5 rounded-3 me-5">
+            <p class="fw-bold">Modificar mis datos</p>
             <form id="form_datos_usuario" asp-action="Edit">
                 <input type="hidden" asp-for="ID" />
                 <div class="row form-group">
@@ -76,35 +76,48 @@
                     <input asp-for="Password" value=@Model.Password />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
-                <div class="row form-group mt-3">
-                    <div class="col-4 p-0">
-                        <button type="submit" asp-controller="MiUsuario" asp-action="Edit" form="form_datos_usuario" class="btn btn-primary">Modificar</button>
+                    <div class="row form-group mt-3">
+                        <div class="col-8 p-0">
+                            <button type="submit" asp-controller="MiUsuario" asp-action="Edit" form="form_datos_usuario" class="btn btn-primary">
+                                <i class="fas fa-edit"></i> Modificar datos
+                            </button>
+                        </div>
                     </div>
-                </div>
                 </form>
         </div>
 
-        <div class="col-4 border border-2 p-5 rounded-3 ms-5">
+        <div class="col-4 card border border-2 border-primary p-5 rounded-3 ms-5">
             <div class="row mt-4 border border-3 rounded-3 p-2">
-                <div class="col-12">
-                    <a asp-action="MisFunciones"><button class="btn btn-primary">Mis Funciones</button></a>
-                </div>
+                    <div class="col-12">
+                        <p class="fw-bold">Ver mis funciones</p>
+                        <a asp-action="MisFunciones" class="btn btn-primary">
+                            <i class="fas fa-film"></i> Mis Funciones
+                        </a>
+                    </div>
             </div>
             <form id="form_cargar_credito" asp-action="CargarCredito">
                 <div class="row mt-5 border border-3 rounded-3 p-2">
                     <input type="hidden" asp-for="ID" name="ID" />                        
                     <div class="col">
                         <div class="row">
+                                <div class="col-8"> 
                             <label for="mostrarCredito" class="control-label">Crédito</label>
                                 <input name="mostrarCredito" value=@Model.Credito disabled="disabled"/>
-                        </div>                       
-                            <label for="monto" class="control-label">Crédito a cargar</label>
-                            <input type="number" name="monto" />
-                            <span asp-validation-for="Credito" class="text-danger"></span>
+                                </div>
+
+                                <div classs="col">
+                                    <label for="monto" class="control-label">Crédito a cargar</label>
+                                    <input type="number" name="monto" />
+                                    <span asp-validation-for="Credito" class="text-danger"></span>
+                                </div>
+                        </div>  
+                        
                     </div>
-                    <div class="col-12 mt-2">
-                        <button form="form_cargar_credito" type="submit" class="btn btn-primary">Cargar crédito</button>
-                    </div>
+                        <div class="col-12 mt-2">
+                            <button form="form_cargar_credito" type="submit" class="btn btn-primary">
+                                <i class="fas fa-money-bill"></i> Cargar crédito
+                            </button>
+                        </div>
                 </div>
             </form>
         </div>

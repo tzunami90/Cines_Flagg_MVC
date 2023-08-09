@@ -50,17 +50,17 @@
               @TempData["MensajeDevolver"]
          </div>        
         }
-             <div class="table-responsive-sm">
+             <div class="table-responsive-sm card">
                 <table class="table table-bordered">
                     <thead>
                           <tr>
                             <th>Pelicula</th>
-                            <th>Funcion</th>
+                            <th>Nro. Funcion</th>
                             <th>Sala</th>
                             <th>Fecha</th>
-                            <th>Entradas</th>
+                            <th>Cantidad de Entradas</th>
                             <th>Costo</th>
-                            <th>Devolver</th>
+                            <th>Devolver Entradas</th>
                           </tr>
                     </thead>
                     <tbody>
@@ -70,14 +70,15 @@
                             <td>@usuarioFuncion.MiFuncion.MiPelicula.Nombre</td>
                             <td>@usuarioFuncion.idFuncion</td>
                             <td>@usuarioFuncion.MiFuncion.MiSala.Ubicacion</td>
-                            <td>@usuarioFuncion.MiFuncion.Fecha</td>
+                            <td>@usuarioFuncion.MiFuncion.Fecha.ToString("dd-MM-yyyy")</td>
                             <td>@usuarioFuncion.cantidadCompra</td>
-                            <td>@usuarioFuncion.MiFuncion.Costo</td>
+                            <td>$@usuarioFuncion.MiFuncion.Costo</td>
                                 <td>
                                     <form asp-action="devolverEntrada" asp-controller="MiUsuario" asp-action="devolverEntrada">
                                         <input type="number" id="idFuncion" name="idFuncion" value="@usuarioFuncion.idFuncion" readonly hidden />
                                         <input type="number" id="cantidad" name="cantidad" required />
-                                        <button method="post" type="submit" class="btn btn-danger">Devolver</button>
+                                       @* <button method="post" type="submit" class="btn btn-danger">Devolver</button>*@
+                                        <button type="submit" method="post" class="border-0 bg-white"><img type="submit" src="/img/devolver.png" height="50px" width="50px" /></button>
                                     </form>
                                 </td>
                             </tr>

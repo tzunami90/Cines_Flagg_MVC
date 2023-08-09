@@ -7,18 +7,20 @@ G- Gaston Mansilla
 G- German Pardo
 
 ***Proyecto Realizado:***
-Sistema de cines (administración con ABM, tipificacion de usuario admin/cliente, busqueda y compra/devolucion de entradas de funciones)
+Sistema de cines (administración con ABM, tipificacion de usuario administrador/cliente, busqueda y compra/devolucion de entradas de funciones)
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------
 ***TIPIFICACIÓN***
 
 Tipos de Usuarios:
-* Administrador: Al loguearse podra ingresar y maipular al ABM de Usuarios, Peliculas, Salas y Funciones. Ademas podrá ver la cartelera.
+* Administrador: Al loguearse podra ingresar y maipular al ABM de Usuarios, Peliculas, Salas y Funciones. Ademas podrá ver la cartelera y operar como un usuario cliente.
 * Cliente: Podra ver cartelera y comprar tickets para funcion seleccionada.
 NOTA: AL crear un usuario nuevo siempre se registra desbloqueado (en la base de datos bloqueado = 0 por default). Solo el administrador al modificar puede bloquearlo (en la base de datos bloqueado = 1).
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------
 ***FORMULARIOS WEB POR TIPO DE USUARIO***
+
+El inicio de la web es nuestra CARTELERA (vista por peliculas). Pero para transaccionar en la misma el usuario debe estar registrado y loguearse.
 
 Formularios del admin:
 * Login/Registro (inicio): Permite registrarse o loguearse. Es el inicio de la aplicación ya que es obligatorio estar registrado.
@@ -27,7 +29,7 @@ Formularios del admin:
 * ABM de Peliculas: Alta Baja y Modificacion de peliculas (solamente administrador)
 * ABM de Salas: Alta Baja y Modificacion de salas (solamente administrador)
 * ABM de Funciones:Alta Baja y Modificacion de funciones (solamente administrador)
-* Busqueda avanzada (para buscar por sala o por pelicula las funciones existentes y comprar). Permitimos al admin la compra.
+* Busqueda por sala o por pelicula (cartelera) (para buscar por sala o por pelicula las funciones existentes y comprar). Permitimos al admin la compra.
 * Actualizar mis datos (Muestra datos del usuario, admite actualizar, y permite carga de credito. Tambien Acceso a Mis Funciones.)
 * Mis funciones (Visualiza las funciones compradas por el usuario y permite devolver entrada si la funcion es del dia de HOY o posterior)
 
@@ -39,6 +41,12 @@ Formularios del cliente:
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------
 ***TRANSACCIONES***
+
+Login/Registro:
+* Se valida que el DNI y el mail ingresados al registrarse no existan en la base de datos.
+* Un usaurio se registra desbloqueado y NO administrador. Solamente un administrador puede ponerlo como administrador en el ABM de Usuarios.
+* El login valida mail y contraseña. Tras 3 intentos fallidos (que se suman en la base de datos) el usuario se bloquea. SOlamente un administrador puede desbloquear un usuario y resetear sus intentos en el ABM de Usuarios.
+* Cuando un usuario se loguea se limpian sus intentos fallidos.
 
 Carga de Crédito:
 1- El usuario logueado debe presionar sobre boton MIS DATOS.
@@ -74,5 +82,34 @@ Si la cantidad es IGUAL, se realiza una delete a la base de datos en dicho regis
 Si la fecha de funcion es anterior a la fecha actual no podra devolver la entrada.
 5- Al devolver se le reintegra crédito al cliente en base al costo de la funcion * cantidad seleccionada en devolución. Asi mismo se actualizan las listas correspondientes.
 
+------------------------------------------------------------------------------------------------------------------------------------------------------
+***EXTRAS***
 
-//
+Los siguientes puntos fueron adicionales a lo requerido en el proyecto:
+* Sonido en transacciones:
+- Al realizar un login exitoso podrá escuchar un sonido muy familiar de inicio de sesión.
+- Al realizar un login erroneo podrá escuchar un sonido de error.
+- Al realizar carga de crédito, podrá escuchar un sonido de una moneda.
+- Al realizar una compra de una funcion podrá escuchar una musica exitosa.
+- Al realizar una devolucion de una función podrá escuchar un grito muy familiar.
+
+* Timeout:
+- El usuario tiene un timeout de 1000 segundos (aprox 15 min).
+- Adicionalmente en Layout colocamos un timeout adicional que lo redirecciona al login.
+
+* Sesiones:
+- Almacenamiento de la sesion del usuario
+- Almacenamiento del rol del usuario si es administrador o no
+- Bloqueo de URLs por rol administrador o cliente. Asi mismo al entrar a una url restringida sin ser admin, te llevara a una url de acceso denegado con un contador de 5 segundos que te redirige a la cartelera.
+
+* Agregados Estéticos:
+- Iconografía reemplazando ciertos botones de acción.
+- Uso de bootstrap, css y javascript. 
+- Modificaciones estéticas en el Layout y la barra de navegación.
+- Edicion de la cartelera y otras vistas no generadas por scaffolding (login, registro, compra por sala, compra por pelicula, mis funciones, mis datos).
+
+* Base de datos sólida:
+- Buena estructuración de base de datos
+- Gran cantidad de peliculas registradas todas con informacion real de sinopsis posters, etc.
+- Gran cantidad de funciones creadas para ejemplo de exposición.
+- Considerable cantidad de salas y usuarios.

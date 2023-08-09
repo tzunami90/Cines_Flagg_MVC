@@ -32,8 +32,8 @@ namespace Cines_Flagg.Controllers
             HttpContext.Session.Clear(); // O puedes utilizar Session.Remove("nombreVariable") para eliminar variables específicas.
             HttpContext.Session.Remove("EsAdmin"); //Limpio el check de administrador o no
             usuarioActual = null;   
-            // Redirigir al usuario a la página de inicio de sesión (o a otra página de tu elección)
-            return RedirectToAction("Index", "Cartelera"); // Redirige a la acción "Index" del controlador "Login".
+            // Redirigir al usuario a la página de inicio de sesión 
+            return RedirectToAction("Index", "Login"); 
         }
 
         public ActionResult Index()
